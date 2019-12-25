@@ -1,0 +1,40 @@
+Our popular movies app will list the recent popular movies from the TMDB database. The app
+will fetch the movies list in its home page. When a movie is clicked, we go to the movie details
+page where extra details will be fetched.
+
+The homepage will alos have a search bar with popup suggestions
+
+The movie page will state the name, the review, the cast and any trailers available. The trailers
+can have their own mediaplayer.
+
+1. Checkout TMDB api documentation to learn more on how to use the api
+2. Read the documentation and collect the required endpoints for our application
+    - The popular movies list endpoint
+    - The movie details endpoint
+    - The cast and trailers endpoint
+    - The reviews and recommendations
+    - The search endpoint to search for movies
+3. Check the documentation to learn how to ceate images links
+4. Start designing the logic for our applications
+    - Install the dependencies we will use in our application
+    - Suggested dependencies:
+        a. react-bootstrap
+        b. lodash (tbd)
+        c. react-autosuggest
+        d. prop-types
+5. Setup any constants we have in a constant file
+    - Constants are the apikey, which should be hidden
+    - the api endpoints
+    - any constraints we might want to initialize
+6. Pepare the scaffolding for redux store managment
+    - install redux via npm
+    - install react-redux
+    - install redux-thunk
+    - install redux-devtools-extension
+    - install redux-logger
+7. Prepare scaffolding for SPA internal routing
+    - install react-router-dom
+    - install react-router-redux
+    - install history
+
+8. Start implementing the components
