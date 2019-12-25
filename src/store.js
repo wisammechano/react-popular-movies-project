@@ -4,18 +4,21 @@ import { composeWithDevTools } from "redux-devtools-extension/developmentOnly";
 import createRootReducer from "./reducer";
 import { routerMiddleware } from "connected-react-router";
 import { createBrowserHistory } from "history";
+import thunk from "redux-thunk";
 
 export const history = createBrowserHistory();
 
 // Build the middleware for intercepting and dispatching navigation actions
 const myRouterMiddleware = routerMiddleware(history);
 
+const middleware = [thunk, myRouterMiddleware];
+
 const getMiddleware = () => {
   if (process.env.NODE_ENV === "production") {
-    return applyMiddleware(myRouterMiddleware);
+    return applyMiddleware(...middleware);
   } else {
     // Enable additional logging in non-production environments.
-    return applyMiddleware(myRouterMiddleware, createLogger());
+    return applyMiddleware(...middleware, createLogger());
   }
 };
 
