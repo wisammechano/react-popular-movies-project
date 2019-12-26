@@ -96,7 +96,7 @@ export function searchMovieList(query) {
     return fetch(url)
       .then(response => response.json())
       .then(json => json.results)
-      .then(data => dispatch(searchMovieSuccess(data, keyword)))
+      .then(data => dispatch(searchMovieSuccess(data, query)))
       .catch(error => dispatch(searchMovieFail(error)));
   };
 }
@@ -107,7 +107,7 @@ export const FETCH_GENRES_FAILURE = "FETCH_GENRES_FAILURE";
 
 function fetchGenres() {
   return {
-    type: FETCH_Genres
+    type: FETCH_GENRES
   };
 }
 
