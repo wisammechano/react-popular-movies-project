@@ -1,0 +1,60 @@
+1. create 5 dirs:
+    - actions
+    - components
+    - constants
+    - reducers
+    - containers
+
+2. create the files:
+    - ./store.js
+    - ./reducers/index.js
+    - ./reducer.js
+    - ./actions/index.js
+    - ./constant/index.js
+
+3. open ./index.js
+    - import { Provider } from 'react-redux'
+    - import the store and history from './store'
+    - import the ConnectedRouter from 'connected-react-router'
+    - import Route and Switch from 'react-router-dom'
+    - Configure the store
+    - Surround the root component by the Provider passing it the store
+    - Then wrap it by ConnectedRouter passing it the history
+    - Wrap all the routes by the Switch
+    - Put each pae in the app inside a Route component passing it the path and the page component
+
+4. open ./store.js
+    - import the following:
+        - createStore, applyMiddleware from redux
+        - createLogger form redux-logger
+        - composeWithDevTools from redux-devtools-extension/developmentOnly
+        - rootReducer from ./reducer
+        - routerMiddleware from connected-react-router
+        - createBrowserHistory from history
+        - thunk from redux-thunk
+    - create and export the history object
+    - init the middleware array with [thunk, routerMiddleware(history)]
+    - if in development mode, put the createLogger() middleware in the middlewares
+    - export a default function that configures the store taking initState as param
+    - the function returns createStore(rootReducer(history), initState, composeWithDevTools(applyMiddleware(middlewares)))
+
+5. open ./reducer.js:
+    - import combineReducers from redux
+    - import connectRouter from connected-react-router
+    - export default a constant function taking the history as param and returns:
+        - combineReducers({...reducers, router: connectRouter(history)})
+
+
+6. Define the constants:
+    - Define the API urls
+    - Define Custom App constants
+    - Define anything that could lead to mispelling errors as constant
+
+7. Define the actions:
+    - Fetch Configurations
+    - Fetch Genres
+    - Fetch Movies
+    - Fetch Movie
+    - Fetch Reviews
+    - Search Movies
+
