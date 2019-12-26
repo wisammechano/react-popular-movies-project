@@ -40,8 +40,7 @@ let apiKey = "";
 if (process.env.NODE_ENV === "production") {
   apiKey = process.env.API_KEY;
 } else {
-  import { API_KEY_BARE } from "../apiKey";
-  apiKey = API_KEY_BARE;
+  apiKey = require("../apiKey").API_KEY_BARE;
 }
 
 export const API_KEY_PARAM = "?api_key=" + apiKey;
