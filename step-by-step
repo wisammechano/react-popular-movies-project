@@ -7,10 +7,9 @@
 
 2. create the files:
     - ./store.js
-    - ./reducers/index.js
     - ./reducer.js
     - ./actions/index.js
-    - ./constant/index.js
+    - ./constants/index.js
 
 3. open ./index.js
     - import { Provider } from 'react-redux'
@@ -21,7 +20,7 @@
     - Surround the root component by the Provider passing it the store
     - Then wrap it by ConnectedRouter passing it the history
     - Wrap all the routes by the Switch
-    - Put each pae in the app inside a Route component passing it the path and the page component
+    - Put each page in the app inside a Route component passing it the path and the page component
 
 4. open ./store.js
     - import the following:

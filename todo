@@ -34,7 +34,7 @@ can have their own mediaplayer.
     - install redux-logger
 7. Prepare scaffolding for SPA internal routing
     - install react-router-dom
-    - install react-router-redux
+    - install connected-react-router
     - install history
 
 8. Start implementing the components
