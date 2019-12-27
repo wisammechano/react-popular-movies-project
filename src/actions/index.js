@@ -1,5 +1,7 @@
 /* 
 Actions:
+  - Select Category
+  - Select Language
   - Fetch Configurations
   - Search Movies
   - Fetch Genres
@@ -25,6 +27,26 @@ import {
   MOVIE_LANG_PARAMETER_AR,
   MOVIE_LANG_PARAMETER_US
 } from "../constants";
+
+export const SELECT_CATEGORY = "SELECT_CATEGORY";
+
+export function changeCategory(category) {
+  return dispatch =>
+    dispatch({
+      type: SELECT_CATEGORY,
+      category
+    });
+}
+
+export function changeLanguage(language) {
+  return dispatch =>
+    dispatch({
+      type: SELECT_LANGUAGE,
+      language
+    });
+}
+
+export const SELECT_LANGUAGE = "SELECT_LANGUAGE";
 
 export const FETCH_CONFIG = "FETCH_CONFIG";
 export const FETCH_CONFIG_SUCCESS = "FETCH_CONFIG_SUCCESS";
@@ -160,26 +182,31 @@ function fetchMoviesFail(error) {
   };
 }
 
-export function fetchMoviesList(category) {
-  let url = URL_MOVIES_POPULAR;
-
-  switch (category) {
-    case MOVIES_CATEGORIES.LATEST:
-      url = URL_MOVIES_LATEST;
-      break;
-    case MOVIES_CATEGORIES.UPCOMING:
-      url = URL_MOVIES_UPCOMING;
-      break;
-    case MOVIES_CATEGORIES.NOW_PLAYING:
-      url = URL_MOVIES_NOW_PLAYING;
-      break;
-    case MOVIES_CATEGORIES.TOP_RATED:
-      url = URL_MOVIES_TOP_RATED;
-      break;
-  }
-
-  return dispatch => {
+export function fetchMoviesList() {
+  return (dispatch, getState) => {
     dispatch(fetchMovies());
+
+    const category = getState().home.selectedCategory;
+    let url;
+
+    switch (category) {
+      case MOVIES_CATEGORIES.LATEST:
+        url = URL_MOVIES_LATEST;
+        break;
+      case MOVIES_CATEGORIES.UPCOMING:
+        url = URL_MOVIES_UPCOMING;
+        break;
+      case MOVIES_CATEGORIES.NOW_PLAYING:
+        url = URL_MOVIES_NOW_PLAYING;
+        break;
+      case MOVIES_CATEGORIES.TOP_RATED:
+        url = URL_MOVIES_TOP_RATED;
+        break;
+      case MOVIES_CATEGORIES.POPULAR:
+      default:
+        url = URL_MOVIES_POPULAR;
+    }
+
     return fetch(url + API_KEY)
       .then(response => response.json())
       .then(json => json.results)
