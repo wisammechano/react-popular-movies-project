@@ -51,10 +51,12 @@
     - Define anything that could lead to mispelling errors as constant
 
 7. Define the actions:
+    - Select Category
+    - Select Language
     - Fetch Configurations
+    - Search Movies
     - Fetch Genres
     - Fetch Movies
     - Fetch Movie
     - Fetch Reviews
-    - Search Movies
 
