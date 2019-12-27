@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import Main from "./Main";
 import { Provider } from "react-redux";
-import configStore, { history } from "./store";
+import { configStore, history } from "./store";
 import { ConnectedRouter } from "connected-react-router";
 import { Route, Switch } from "react-router-dom";
 
