@@ -1,8 +1,7 @@
 import { createStore, applyMiddleware } from "redux";
 import { createLogger } from "redux-logger";
 import { composeWithDevTools } from "redux-devtools-extension/developmentOnly";
-
-import rootReducer from "./reducer";
+import createRootReducer from "./reducer";
 import { routerMiddleware } from "connected-react-router";
 import { createBrowserHistory } from "history";
 import thunk from "redux-thunk";
@@ -17,7 +16,7 @@ if (process.env.NODE_ENV !== "production") {
 
 export function configStore(initState) {
   return createStore(
-    rootReducer(history),
+    createRootReducer(history),
     initState,
     composeWithDevTools(applyMiddleware(...middleware))
   );

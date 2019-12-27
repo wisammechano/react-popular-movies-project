@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import "./Main.css";
-
 import { fetchMoviesList } from "./actions";
+import "./Main.css";
 
 import { connect } from "react-redux";
 

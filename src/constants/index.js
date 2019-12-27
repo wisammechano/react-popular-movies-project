@@ -20,7 +20,6 @@ export const IMG_SIZE_XSMALL = "w45/";
 export const IMG_SIZE_SMALL = "w150/";
 export const IMG_SIZE_LARGE = "w342/";
 export const POSTER_SIZE_SMALL = "w154/";
-
 export const CAST_MAX_NUM = 5;
 export const TRAILER_MAX_NUM = 3;
 export const SIMILAR_MOVIES_MAX_NUM = 3;
