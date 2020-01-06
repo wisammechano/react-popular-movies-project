@@ -1,3 +1,4 @@
+export const APP_NAME = "Popular Movies";
 export const URL_BASE = "https://api.themoviedb.org/3";
 export const URL_IMAGE_BASE = "https://image.tmdb.org/t/p/";
 export const URL_CONFIG = URL_BASE + "/configuration";
