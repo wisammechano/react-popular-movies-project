@@ -28,22 +28,22 @@ import {
   MOVIE_LANG_PARAMETER_US
 } from "../constants";
 
+import { debounce } from "lodash";
+
 export const SELECT_CATEGORY = "SELECT_CATEGORY";
 
 export function changeCategory(category) {
-  return dispatch =>
-    dispatch({
-      type: SELECT_CATEGORY,
-      category
-    });
+  return {
+    type: SELECT_CATEGORY,
+    category
+  };
 }
 
 export function changeLanguage(language) {
-  return dispatch =>
-    dispatch({
-      type: SELECT_LANGUAGE,
-      language
-    });
+  return {
+    type: SELECT_LANGUAGE,
+    language
+  };
 }
 
 export const SELECT_LANGUAGE = "SELECT_LANGUAGE";
@@ -74,7 +74,7 @@ function fetchConfigFailure(error) {
 
 export function fetchConfigurations() {
   return dispatch => {
-    dispatch(fetchConfig);
+    dispatch(fetchConfig());
 
     return fetch(URL_CONFIG + API_KEY)
       .then(response => response.json())
@@ -110,25 +110,29 @@ function searchMovieFail(error) {
   };
 }
 
-export function searchMovieList(query) {
+const debouncedSearch = debounce((dispatch, query) => {
   let url = URL_SEARCH + query + API_KEY_ALT;
+  if (query.length === 0) {
+    return dispatch(resetSearchMovies());
+  }
+  dispatch(searchMovie(query));
+  return fetch(url)
+    .then(response => response.json())
+    .then(json => json.results)
+    .then(data => dispatch(searchMovieSuccess(data)))
+    .catch(error => dispatch(searchMovieFail(error)));
+}, 600);
 
+export function searchMovieList(query) {
   return dispatch => {
-    dispatch(searchMovie());
-
-    return fetch(url)
-      .then(response => response.json())
-      .then(json => json.results)
-      .then(data => dispatch(searchMovieSuccess(data, query)))
-      .catch(error => dispatch(searchMovieFail(error)));
+    return debouncedSearch(dispatch, query);
   };
 }
 
 export function resetSearchMovies() {
-  return dispatch =>
-    dispatch({
-      type: RESET_SERACH
-    });
+  return {
+    type: RESET_SERACH
+  };
 }
 
 export const FETCH_GENRES = "FETCH_GENRES";
@@ -160,7 +164,7 @@ export function fetchGenresList() {
     dispatch(fetchGenres());
     return fetch(URL_GENRES + API_KEY)
       .then(response => response.json())
-      .then(json => json.results)
+      .then(json => json.genres)
       .then(data => dispatch(fetchGenresSuccess(data)))
       .catch(error => dispatch(fetchGenresFail(error)));
   };
