@@ -86,6 +86,7 @@ export function fetchConfigurations() {
 export const SEARCH_MOVIE = "SEARCH_MOVIE";
 export const SEARCH_MOVIE_SUCCESS = "SEARCH_MOVIE_SUCCESS";
 export const SEARCH_MOVIE_FAILURE = "SEARCH_MOVIE_FAILURE";
+export const RESET_SERACH = "RESET_SEARCH";
 
 function searchMovie(query) {
   return {
@@ -121,6 +122,13 @@ export function searchMovieList(query) {
       .then(data => dispatch(searchMovieSuccess(data, query)))
       .catch(error => dispatch(searchMovieFail(error)));
   };
+}
+
+export function resetSearchMovies() {
+  return dispatch =>
+    dispatch({
+      type: RESET_SERACH
+    });
 }
 
 export const FETCH_GENRES = "FETCH_GENRES";
