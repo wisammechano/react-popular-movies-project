@@ -7,8 +7,11 @@ import { Provider } from "react-redux";
 import configStore, { history } from "./store";
 import { ConnectedRouter } from "connected-react-router";
 import { APP_NAME } from "./constants";
+import { fetchConfigurations, fetchGenresList } from "./actions";
 
 const store = configStore(/* provide initial or preloaded state if any*/);
+store.dispatch(fetchConfigurations());
+store.dispatch(fetchGenresList());
 
 ReactDOM.render(
   <Provider store={store}>
