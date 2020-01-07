@@ -114,7 +114,7 @@ function searchMovieFail(error) {
 }
 
 const debouncedSearch = debounce((dispatch, getState, query) => {
-  const lang = getState().home.selectedLanguage;
+  const lang = getState().home.selectedLanguage.code;
 
   let url = URL_SEARCH + query + API_KEY_ALT + lang;
   if (query.length === 0) {
@@ -171,7 +171,7 @@ function fetchGenresFail(error) {
 
 export function fetchGenresList() {
   return (dispatch, getState) => {
-    const lang = getState().home.selectedLanguage;
+    const lang = getState().home.selectedLanguage.code;
     dispatch(fetchGenres());
     return fetch(URL_GENRES + API_KEY + lang)
       .then(response => {
@@ -214,24 +214,24 @@ export function fetchMoviesList() {
   return (dispatch, getState) => {
     dispatch(fetchMovies());
     const state = getState();
-    const category = state.home.selectedCategory;
-    const lang = state.home.selectedLanguage;
+    const category = state.home.selectedCategory.code;
+    const lang = state.home.selectedLanguage.code;
     let url;
 
     switch (category) {
-      case MOVIES_CATEGORIES.LATEST:
+      case MOVIES_CATEGORIES.LATEST.code:
         url = URL_MOVIES_LATEST;
         break;
-      case MOVIES_CATEGORIES.UPCOMING:
+      case MOVIES_CATEGORIES.UPCOMING.code:
         url = URL_MOVIES_UPCOMING;
         break;
-      case MOVIES_CATEGORIES.NOW_PLAYING:
+      case MOVIES_CATEGORIES.NOW_PLAYING.code:
         url = URL_MOVIES_NOW_PLAYING;
         break;
-      case MOVIES_CATEGORIES.TOP_RATED:
+      case MOVIES_CATEGORIES.TOP_RATED.code:
         url = URL_MOVIES_TOP_RATED;
         break;
-      case MOVIES_CATEGORIES.POPULAR:
+      case MOVIES_CATEGORIES.POPULAR.code:
       default:
         url = URL_MOVIES_POPULAR;
     }

@@ -29,11 +29,24 @@ export const MOVIE_LANG_PARAMETER_US = "&language=en-US";
 export const MOVIE_LANG_PARAMETER_AR = "&language=ar";
 
 export const MOVIES_CATEGORIES = {
-  POPULAR: "POPULAR",
-  LATEST: "LATEST",
-  UPCOMING: "UPCOMING",
-  TOP_RATED: "TOP_RATED",
-  NOW_PLAYING: "NOW_PLAYING"
+  POPULAR: { code: "POPULAR", name_en: "Popular", name_ar: "شائع" },
+  LATEST: { code: "LATEST", name_en: "Latest", name_ar: "احدث الافلام" },
+  UPCOMING: { code: "UPCOMING", name_en: "Upcoming", name_ar: "القادمة قريبا" },
+  TOP_RATED: {
+    code: "TOP_RATED",
+    name_en: "Top Rated",
+    name_ar: "الاعلى تقييما"
+  },
+  NOW_PLAYING: {
+    code: "NOW_PLAYING",
+    name_en: "Now Playing",
+    name_ar: "في دور العرض"
+  }
+};
+
+export const LANGUAGES = {
+  ARABIC: { code: MOVIE_LANG_PARAMETER_AR, name: "العربية" },
+  ENGLISH: { code: MOVIE_LANG_PARAMETER_US, name: "English" }
 };
 
 let apiKey = "";

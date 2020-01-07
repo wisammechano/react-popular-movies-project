@@ -11,11 +11,7 @@ import {
   FETCH_CONFIG_SUCCESS
 } from "../actions";
 
-import {
-  MOVIES_CATEGORIES,
-  MOVIE_LANG_PARAMETER_US,
-  MOVIE_LANG_PARAMETER_AR
-} from "../constants";
+import { MOVIES_CATEGORIES, LANGUAGES } from "../constants";
 
 const initState = {
   movies: [],
@@ -24,9 +20,10 @@ const initState = {
   error: null,
   searchQuery: "",
   selectedCategory: MOVIES_CATEGORIES.POPULAR,
-  selectedLanguage: MOVIE_LANG_PARAMETER_AR,
+  selectedLanguage: LANGUAGES.ARABIC,
   configsLoaded: false,
-  genresLoaded: false
+  genresLoaded: false,
+  showSettings: false
 };
 
 export default (state = initState, action) => {
