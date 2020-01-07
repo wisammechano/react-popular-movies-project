@@ -7,6 +7,7 @@ import HomePage from "./HomePage";
 import MoviePage from "./MoviePage";
 import "./Main.css";
 import FilmBar from "./ProgressBarOverlay";
+import SettingsModal from "./SettingsModal";
 
 const Main = props => {
   const isLoading = useSelector(
@@ -15,6 +16,7 @@ const Main = props => {
 
   return (
     <div className="App">
+      <SettingsModal />
       {isLoading && <FilmBar />}
       <Header appName={props.appName} />
       <Switch>

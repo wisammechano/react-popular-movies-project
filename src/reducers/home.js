@@ -8,7 +8,8 @@ import {
   SELECT_LANGUAGE,
   RESET_SERACH,
   FETCH_GENRES_SUCCESS,
-  FETCH_CONFIG_SUCCESS
+  FETCH_CONFIG_SUCCESS,
+  TOGGLE_SETTINGS_MODAL
 } from "../actions";
 
 import { MOVIES_CATEGORIES, LANGUAGES } from "../constants";
@@ -62,6 +63,8 @@ export default (state = initState, action) => {
       return { ...state, configsLoaded: true };
     case FETCH_GENRES_SUCCESS:
       return { ...state, genresLoaded: true };
+    case TOGGLE_SETTINGS_MODAL:
+      return { ...state, showSettings: action.toggle };
     default:
       return state;
   }

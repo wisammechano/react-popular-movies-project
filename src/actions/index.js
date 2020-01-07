@@ -28,6 +28,15 @@ import {
 
 import { debounce } from "lodash";
 
+export const TOGGLE_SETTINGS_MODAL = "TOGGLE_SETTINGS_MODAL";
+
+export function toggleSettingsModal(toggle) {
+  return {
+    type: TOGGLE_SETTINGS_MODAL,
+    toggle
+  };
+}
+
 export const SELECT_CATEGORY = "SELECT_CATEGORY";
 
 export function changeCategory(category) {
