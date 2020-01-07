@@ -23,9 +23,7 @@ import {
   MOVIE_APPEND_PARAMETER,
   API_KEY_PARAM as API_KEY,
   API_KEY_ALT_PARAM as API_KEY_ALT,
-  MOVIES_CATEGORIES,
-  MOVIE_LANG_PARAMETER_AR,
-  MOVIE_LANG_PARAMETER_US
+  MOVIES_CATEGORIES
 } from "../constants";
 
 import { debounce } from "lodash";
@@ -110,8 +108,10 @@ function searchMovieFail(error) {
   };
 }
 
-const debouncedSearch = debounce((dispatch, query) => {
-  let url = URL_SEARCH + query + API_KEY_ALT;
+const debouncedSearch = debounce((dispatch, getState, query) => {
+  const lang = getState().home.selectedLanguage;
+
+  let url = URL_SEARCH + query + API_KEY_ALT + lang;
   if (query.length === 0) {
     return dispatch(resetSearchMovies());
   }
@@ -124,8 +124,8 @@ const debouncedSearch = debounce((dispatch, query) => {
 }, 350);
 
 export function searchMovieList(query) {
-  return dispatch => {
-    return debouncedSearch(dispatch, query);
+  return (dispatch, getState) => {
+    return debouncedSearch(dispatch, getState, query);
   };
 }
 
@@ -160,9 +160,10 @@ function fetchGenresFail(error) {
 }
 
 export function fetchGenresList() {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const lang = getState().home.selectedLanguage;
     dispatch(fetchGenres());
-    return fetch(URL_GENRES + API_KEY)
+    return fetch(URL_GENRES + API_KEY + lang)
       .then(response => response.json())
       .then(json => json.genres)
       .then(data => dispatch(fetchGenresSuccess(data)))
@@ -197,8 +198,9 @@ function fetchMoviesFail(error) {
 export function fetchMoviesList() {
   return (dispatch, getState) => {
     dispatch(fetchMovies());
-
-    const category = getState().home.selectedCategory;
+    const state = getState();
+    const category = state.home.selectedCategory;
+    const lang = state.home.selectedLanguage;
     let url;
 
     switch (category) {
@@ -219,7 +221,7 @@ export function fetchMoviesList() {
         url = URL_MOVIES_POPULAR;
     }
 
-    return fetch(url + API_KEY)
+    return fetch(url + API_KEY + lang)
       .then(response => response.json())
       .then(json => json.results)
       .then(data => dispatch(fetchMoviesSuccess(data)))
