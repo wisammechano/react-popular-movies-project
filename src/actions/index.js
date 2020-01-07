@@ -121,7 +121,7 @@ const debouncedSearch = debounce((dispatch, query) => {
     .then(json => json.results)
     .then(data => dispatch(searchMovieSuccess(data)))
     .catch(error => dispatch(searchMovieFail(error)));
-}, 600);
+}, 350);
 
 export function searchMovieList(query) {
   return dispatch => {
