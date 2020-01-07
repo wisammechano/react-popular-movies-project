@@ -75,9 +75,14 @@ export function fetchConfigurations() {
     dispatch(fetchConfig());
 
     return fetch(URL_CONFIG + API_KEY)
-      .then(response => response.json())
+      .then(response => {
+        if (response.ok) return response.json();
+        throw response;
+      })
       .then(json => dispatch(fetchConfigSuccess(json)))
-      .catch(error => dispatch(fetchConfigFailure(error)));
+      .catch(error =>
+        error.json().then(error => dispatch(fetchConfigFailure(error)))
+      );
   };
 }
 
@@ -117,10 +122,15 @@ const debouncedSearch = debounce((dispatch, getState, query) => {
   }
   dispatch(searchMovie(query));
   return fetch(url)
-    .then(response => response.json())
+    .then(response => {
+      if (response.ok) return response.json();
+      throw response;
+    })
     .then(json => json.results)
     .then(data => dispatch(searchMovieSuccess(data)))
-    .catch(error => dispatch(searchMovieFail(error)));
+    .catch(error =>
+      error.json().then(error => dispatch(searchMovieFail(error)))
+    );
 }, 350);
 
 export function searchMovieList(query) {
@@ -164,10 +174,15 @@ export function fetchGenresList() {
     const lang = getState().home.selectedLanguage;
     dispatch(fetchGenres());
     return fetch(URL_GENRES + API_KEY + lang)
-      .then(response => response.json())
+      .then(response => {
+        if (response.ok) return response.json();
+        throw response;
+      })
       .then(json => json.genres)
       .then(data => dispatch(fetchGenresSuccess(data)))
-      .catch(error => dispatch(fetchGenresFail(error)));
+      .catch(error =>
+        error.json().then(error => dispatch(fetchGenresFail(error)))
+      );
   };
 }
 
@@ -222,10 +237,15 @@ export function fetchMoviesList() {
     }
 
     return fetch(url + API_KEY + lang)
-      .then(response => response.json())
+      .then(response => {
+        if (response.ok) return response.json();
+        throw response;
+      })
       .then(json => json.results)
       .then(data => dispatch(fetchMoviesSuccess(data)))
-      .catch(error => dispatch(fetchMoviesFail(error)));
+      .catch(error =>
+        error.json().then(error => dispatch(fetchMoviesFail(error)))
+      );
   };
 }
 
@@ -258,9 +278,14 @@ export function fetchMovieDetail(id) {
   return dispatch => {
     dispatch(fetchMovie());
     return fetch(url_movie)
-      .then(response => response.json())
+      .then(response => {
+        if (response.ok) return response.json();
+        throw response;
+      })
       .then(data => dispatch(fetchMovieSuccess(data)))
-      .catch(error => dispatch(fetchMovieFail(error)));
+      .catch(error =>
+        error.json().then(error => dispatch(fetchMovieFail(error)))
+      );
   };
 }
 
@@ -292,11 +317,16 @@ export function fetchReviewsList(id) {
   return function(dispatch) {
     dispatch(fetchReviews());
     return fetch(URL_GENRES + API_KEY)
-      .then(response => response.json())
+      .then(response => {
+        if (response.ok) return response.json();
+        throw response;
+      })
       .then(json => json.results)
       .then(data => {
         dispatch(fetchReviewsSuccess(data));
       })
-      .catch(error => dispatch(fetchReviewsFail(error)));
+      .catch(error =>
+        error.json().then(error => dispatch(fetchReviewsFail(error)))
+      );
   };
 }
