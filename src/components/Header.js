@@ -7,13 +7,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCog } from "@fortawesome/free-solid-svg-icons";
 import { toggleSettingsModal } from "../actions";
 
-const Header = ({ appName }) => {
+const Header = ({ appName, className }) => {
   const dispatch = useDispatch();
   const showSettings = e => {
     dispatch(toggleSettingsModal(true));
   };
   return (
-    <Navbar variant="dark" bg="dark" sticky="top">
+    <Navbar variant="dark" bg="dark" sticky="top" className={className}>
       <Logo appName={appName} />
       <Button
         variant="link"
