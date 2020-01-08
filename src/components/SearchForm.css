@@ -69,7 +69,12 @@
 }
 
 .react-autosuggest__suggestion--focused {
-    background-color: #0C7EAF;
+    background-color: #343a40;
+    color: #fff;
+}
+
+.react-autosuggest__suggestion--highlighted {
+    background-color: #343a40;
     color: #fff;
 }
 
