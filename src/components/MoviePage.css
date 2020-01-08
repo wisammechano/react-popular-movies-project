@@ -1,0 +1,29 @@
+.movie-cover {
+    height: 420px;
+    background-Size: cover;
+    background-position-x: center;
+}
+
+.movie-cover-overlay {
+    color: white;
+    background-color: rgba(0, 0, 0, 0.15);
+    text-shadow: 1px 2px 1px #000;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+}
+
+.movie-cover-meta {
+    margin: 10px 25px;
+}
+
+@media screen and (max-width:768px) {
+    .movie-cover-overlay {
+        justify-content: center;
+        text-align: center;
+    }
+
+    .movie-cover {
+        height: 240px;
+    }
+}
