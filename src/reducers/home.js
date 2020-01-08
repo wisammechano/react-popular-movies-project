@@ -14,14 +14,16 @@ import {
 
 import { MOVIES_CATEGORIES, LANGUAGES } from "../constants";
 
+const settings = JSON.parse(window.localStorage.getItem("settings")) || {};
+
 const initState = {
   movies: [],
   searchResults: [],
   searchError: null,
   error: null,
   searchQuery: "",
-  selectedCategory: MOVIES_CATEGORIES.POPULAR,
-  selectedLanguage: LANGUAGES.ARABIC,
+  selectedCategory: settings.selectedCategory || MOVIES_CATEGORIES.POPULAR,
+  selectedLanguage: settings.selectedLanguage || LANGUAGES.ARABIC,
   configsLoaded: false,
   genresLoaded: false,
   showSettings: false

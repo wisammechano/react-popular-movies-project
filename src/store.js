@@ -6,12 +6,14 @@ import { routerMiddleware } from "connected-react-router";
 import { createBrowserHistory } from "history";
 import thunk from "redux-thunk";
 
+import { localStorageMiddleware } from "./middleware";
+
 export const history = createBrowserHistory();
 
 // Build the middleware for intercepting and dispatching navigation actions
 const myRouterMiddleware = routerMiddleware(history);
 
-const middleware = [thunk, myRouterMiddleware];
+const middleware = [thunk, myRouterMiddleware, localStorageMiddleware];
 
 const getMiddleware = () => {
   if (process.env.NODE_ENV === "production") {
