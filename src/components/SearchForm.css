@@ -88,9 +88,16 @@
     color: #120000;
 }
 
+.movie-suggestion-item {
+    text-align: center;
+}
 
 @media screen and (min-width:576px) {
     #search-form {
         width: 400px
+    }
+
+    .movie-suggestion-item {
+        text-align: start;
     }
 }

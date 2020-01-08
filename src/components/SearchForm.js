@@ -6,6 +6,9 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { searchMovieList } from "../actions";
 import Autosuggest from "react-autosuggest";
 import "./SearchForm.css";
+import { getImagesUrl } from "../utils";
+
+import { history } from "../store";
 
 export const SearchForm = () => {
   const storeSearchQuery = useSelector(state => state.home.searchQuery);
@@ -41,7 +44,7 @@ export const SearchForm = () => {
         renderSuggestion={renderSuggestion}
         inputProps={inputProps}
         onSuggestionSelected={(event, { suggestion }) => {
-          console.log(suggestion.title);
+          history.push("/movie/" + suggestion.id, { movie: suggestion });
         }}
         renderInputComponent={inputProps => (
           <div className="has-search">
@@ -57,32 +60,24 @@ export const SearchForm = () => {
 };
 
 const MovieItem = ({ movie }) => {
-  const config = useSelector(state => state.configurations.images);
-  // const backdrop = `${config.base_url
-  //   .split(":")[1]
-  //   .concat(config.backdrop_sizes[0])}/${movie.backdrop_path}`;
-
-  const poster = movie.poster_path
-    ? `${config.base_url.split(":")[1].concat(config.poster_sizes[0])}/${
-        movie.poster_path
-      }`
-    : null;
+  const config = useSelector(state => state.configurations);
+  const { poster } = getImagesUrl(movie, config);
   return (
-    <Row className="p-1 align-items-center">
-      <Col xs={1}>
+    <Row className="p-1 align-items-center movie-suggestion-item">
+      <Col sm={2}>
         {poster && (
           <img
-            src={poster}
+            src={Object.values(poster)[0]}
             alt={movie.title + " backdrop"}
-            style={{ height: 50 }}
+            style={{ height: 65, border: "1px solid #a4a4a4" }}
           />
         )}
       </Col>
-      <Col>
-        <h6 className="d-inline">{movie.title} </h6>
-        <i>
+      <Col xs={12} sm={10} className="p-2">
+        <h6 className="my-0 mx-1">{movie.title}</h6>
+        <p className="mx-1">
           ({movie.release_date ? movie.release_date.split("-")[0] : "Unknown"})
-        </i>
+        </p>
       </Col>
     </Row>
   );
