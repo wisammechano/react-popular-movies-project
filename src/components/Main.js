@@ -19,10 +19,12 @@ const Main = props => {
       <SettingsModal />
       {isLoading && <FilmBar />}
       <Header appName={props.appName} />
-      <Switch>
-        <Route exact path="/" component={HomePage} />
-        <Route exact path="/movie/:id" component={MoviePage} />
-      </Switch>
+      <div className="container mt-2">
+        <Switch>
+          <Route exact path="/" component={HomePage} />
+          <Route exact path="/movie/:id" component={MoviePage} />
+        </Switch>
+      </div>
       <Footer />
     </div>
   );
