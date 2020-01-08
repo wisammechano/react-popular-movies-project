@@ -11,7 +11,7 @@ import SettingsModal from "./SettingsModal";
 
 const Main = props => {
   const isLoading = useSelector(
-    state => !state.home.genresLoaded && !state.home.configsLoaded
+    state => !(state.home.genresLoaded && state.home.configsLoaded)
   );
 
   return (
@@ -19,12 +19,14 @@ const Main = props => {
       <SettingsModal />
       {isLoading && <FilmBar />}
       <Header appName={props.appName} />
-      <div className="container mt-2">
-        <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route exact path="/movie/:id" component={MoviePage} />
-        </Switch>
-      </div>
+      {!isLoading && (
+        <div className="container mt-2">
+          <Switch>
+            <Route exact path="/" component={HomePage} />
+            <Route exact path="/movie/:id" component={MoviePage} />
+          </Switch>
+        </div>
+      )}
       <Footer />
     </div>
   );
