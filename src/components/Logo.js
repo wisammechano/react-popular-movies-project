@@ -6,12 +6,12 @@ export const Logo = props => {
     <>
       <Navbar.Brand
         as={Link}
-        to="about"
+        to="/"
         className="brand-font d-none d-sm-inline-block"
       >
         {props.appName}
       </Navbar.Brand>
-      <Navbar.Brand as={Link} to="home" className="brand-font d-sm-none">
+      <Navbar.Brand as={Link} to="/" className="brand-font d-sm-none">
         {props.appName
           .split(" ")
           .map(w => w[0])
