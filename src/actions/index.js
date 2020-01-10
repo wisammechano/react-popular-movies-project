@@ -25,7 +25,7 @@ import {
   API_KEY_ALT_PARAM as API_KEY_ALT,
   MOVIES_CATEGORIES
 } from "../constants";
-
+import { fetchJson } from "../utils";
 import { debounce } from "lodash";
 
 export const TOGGLE_SETTINGS_MODAL = "TOGGLE_SETTINGS_MODAL";
@@ -82,16 +82,9 @@ function fetchConfigFailure(error) {
 export function fetchConfigurations() {
   return dispatch => {
     dispatch(fetchConfig());
-
-    return fetch(URL_CONFIG + API_KEY)
-      .then(response => {
-        if (response.ok) return response.json();
-        throw response;
-      })
+    return fetchJson(URL_CONFIG + API_KEY)
       .then(json => dispatch(fetchConfigSuccess(json)))
-      .catch(error =>
-        error.json().then(error => dispatch(fetchConfigFailure(error)))
-      );
+      .catch(error => dispatch(fetchConfigFailure(error.message)));
   };
 }
 
@@ -130,16 +123,9 @@ const debouncedSearch = debounce((dispatch, getState, query) => {
     return dispatch(resetSearchMovies());
   }
   dispatch(searchMovie(query));
-  return fetch(url)
-    .then(response => {
-      if (response.ok) return response.json();
-      throw response;
-    })
-    .then(json => json.results)
-    .then(data => dispatch(searchMovieSuccess(data)))
-    .catch(error =>
-      error.json().then(error => dispatch(searchMovieFail(error)))
-    );
+  return fetchJson(url)
+    .then(json => dispatch(searchMovieSuccess(json.results)))
+    .catch(error => dispatch(searchMovieFail(error.message)));
 }, 350);
 
 export function searchMovieList(query) {
@@ -182,16 +168,9 @@ export function fetchGenresList() {
   return (dispatch, getState) => {
     const lang = getState().home.selectedLanguage.code;
     dispatch(fetchGenres());
-    return fetch(URL_GENRES + API_KEY + lang)
-      .then(response => {
-        if (response.ok) return response.json();
-        throw response;
-      })
-      .then(json => json.genres)
-      .then(data => dispatch(fetchGenresSuccess(data)))
-      .catch(error =>
-        error.json().then(error => dispatch(fetchGenresFail(error)))
-      );
+    return fetchJson(URL_GENRES + API_KEY + lang)
+      .then(json => dispatch(fetchGenresSuccess(json.genres)))
+      .catch(error => dispatch(fetchGenresFail(error.message)));
   };
 }
 
@@ -245,16 +224,9 @@ export function fetchMoviesList() {
         url = URL_MOVIES_POPULAR;
     }
 
-    return fetch(url + API_KEY + lang)
-      .then(response => {
-        if (response.ok) return response.json();
-        throw response;
-      })
-      .then(json => json.results)
-      .then(data => dispatch(fetchMoviesSuccess(data)))
-      .catch(error =>
-        error.json().then(error => dispatch(fetchMoviesFail(error)))
-      );
+    return fetchJson(url + API_KEY + lang)
+      .then(json => dispatch(fetchMoviesSuccess(json.results)))
+      .catch(error => dispatch(fetchMoviesFail(error.message)));
   };
 }
 
@@ -286,15 +258,9 @@ export function fetchMovieDetail(id) {
   const url_movie = URL_MOVIE + id + API_KEY + MOVIE_APPEND_PARAMETER;
   return dispatch => {
     dispatch(fetchMovie());
-    return fetch(url_movie)
-      .then(response => {
-        if (response.ok) return response.json();
-        throw response;
-      })
-      .then(data => dispatch(fetchMovieSuccess(data)))
-      .catch(error =>
-        error.json().then(error => dispatch(fetchMovieFail(error)))
-      );
+    return fetchJson(url_movie)
+      .then(json => dispatch(fetchMovieSuccess(json)))
+      .catch(error => dispatch(fetchMovieFail(error.message)));
   };
 }
 
@@ -325,17 +291,8 @@ function fetchReviewsFail(error) {
 export function fetchReviewsList(id) {
   return function(dispatch) {
     dispatch(fetchReviews());
-    return fetch(URL_GENRES + API_KEY)
-      .then(response => {
-        if (response.ok) return response.json();
-        throw response;
-      })
-      .then(json => json.results)
-      .then(data => {
-        dispatch(fetchReviewsSuccess(data));
-      })
-      .catch(error =>
-        error.json().then(error => dispatch(fetchReviewsFail(error)))
-      );
+    return fetchJson(URL_GENRES + API_KEY)
+      .then(json => dispatch(fetchReviewsSuccess(json.results)))
+      .catch(error => dispatch(fetchReviewsFail(error.message)));
   };
 }
