@@ -1,3 +1,7 @@
+import { API_KEY_BARE as API_KEY } from "../apiKey";
+
+export const API_KEY_PARAM = "?api_key=" + API_KEY;
+export const API_KEY_ALT_PARAM = "&api_key=" + API_KEY;
 export const APP_NAME = "Popular Movies";
 export const URL_BASE = "https://api.themoviedb.org/3";
 export const URL_IMAGE_BASE = "https://image.tmdb.org/t/p/";
@@ -48,14 +52,3 @@ export const LANGUAGES = {
   ARABIC: { code: MOVIE_LANG_PARAMETER_AR, name: "العربية" },
   ENGLISH: { code: MOVIE_LANG_PARAMETER_US, name: "English" }
 };
-
-let apiKey = "";
-
-if (process.env.NODE_ENV === "production") {
-  apiKey = process.env.API_KEY;
-} else {
-  apiKey = require("../apiKey").API_KEY_BARE;
-}
-
-export const API_KEY_PARAM = "?api_key=" + apiKey;
-export const API_KEY_ALT_PARAM = "&api_key=" + apiKey;
