@@ -6,4 +6,6 @@
 
 .app-page {
     box-shadow: 0 0 5px 2px #a4a4a4;
+    border-radius: 5px;
+    overflow: hidden;
 }
