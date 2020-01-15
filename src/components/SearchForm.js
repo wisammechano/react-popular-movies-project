@@ -18,7 +18,7 @@ export const SearchForm = () => {
 
   const handleChange = query => {
     setSearchQuery(query);
-    dispatch(searchMovieList(query));
+    dispatch(searchMovieList(query.trim()));
   };
 
   const renderSuggestion = movie => <MovieItem movie={movie} />;
@@ -31,7 +31,7 @@ export const SearchForm = () => {
     value: searchQuery,
     autoComplete: "off",
     onChange: (e, other) =>
-      other.method === "type" && handleChange(e.target.value.trim())
+      other.method === "type" && handleChange(e.target.value)
   };
 
   return (
