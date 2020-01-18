@@ -1,11 +1,16 @@
-.App {}
+.App {
+    max-height: 100vh;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
 
 .App-header {
     box-shadow: 0 1px 5px #4a4a4a;
+    max-height: 3.5em;
 }
 
-.app-page {
-    box-shadow: 0 0 5px 2px #a4a4a4;
-    border-radius: 5px;
-    overflow: hidden;
+.App-page-wrapper {
+    overflow: auto;
+    scroll-behavior: smooth;
 }

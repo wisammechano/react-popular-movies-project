@@ -20,14 +20,14 @@ const Main = props => {
       {isLoading && <FilmBar />}
       <Header appName={props.appName} className="App-header" />
       {!isLoading && (
-        <div className="container mt-2">
+        <div className="App-page-wrapper">
           <Switch>
             <Route exact path="/" component={HomePage} />
             <Route exact path="/movie/:id" component={MoviePage} />
           </Switch>
+          <Footer />
         </div>
       )}
-      <Footer />
     </div>
   );
 };
