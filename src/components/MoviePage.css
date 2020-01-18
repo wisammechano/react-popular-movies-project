@@ -1,29 +1,53 @@
 .movie-cover {
-    height: 420px;
-    background-Size: cover;
+    /* 100% vh - navigator - header */
+    height: calc(100vh - 28px - 55px);
+    background-size: cover;
     background-position-x: center;
+}
+
+@media screen and (min-width: 768px) {
+    .movie-cover {
+        height: calc(100vh - 40px - 55px);
+    }
 }
 
 .movie-cover-overlay {
     color: white;
-    background-color: rgba(0, 0, 0, 0.15);
+    background-color: rgba(0, 0, 0, 0.3);
     text-shadow: 1px 2px 1px #000;
     height: 100%;
     display: flex;
     align-items: flex-end;
+    justify-content: center;
+    text-align: center;
 }
 
 .movie-cover-meta {
-    margin: 10px 25px;
+    position: -webkit-sticky;
+    position: sticky;
+    bottom: 0;
 }
 
-@media screen and (max-width:768px) {
+.movie-poster {
+    max-width: 300px;
+    max-height: 450px;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+}
+
+.movie-poster img {
+    width: 100%;
+}
+
+
+@media screen and (min-width: 768px) {
     .movie-cover-overlay {
-        justify-content: center;
-        text-align: center;
+        justify-content: flex-start;
+        text-align: start;
     }
 
-    .movie-cover {
-        height: 240px;
-    }
+    /* .movie-cover {
+    height: 520px;
+  } */
 }
