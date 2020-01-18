@@ -29,7 +29,7 @@ export const CAST_MAX_NUM = 5;
 export const TRAILER_MAX_NUM = 3;
 export const SIMILAR_MOVIES_MAX_NUM = 3;
 
-export const MOVIE_LANG_PARAMETER_US = "&language=en-US";
+export const MOVIE_LANG_PARAMETER_US = "&language=en";
 export const MOVIE_LANG_PARAMETER_AR = "&language=ar";
 
 export const MOVIES_CATEGORIES = {

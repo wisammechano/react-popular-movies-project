@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { FormControl, Form, Row, Col } from "react-bootstrap";
+import { FormControl, Form, Row, Col, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { searchMovieList } from "../actions";
@@ -12,6 +12,7 @@ import { history } from "../store";
 
 export const SearchForm = () => {
   const storeSearchQuery = useSelector(state => state.home.searchQuery);
+  const storeIsSearching = useSelector(state => state.home.isSearching);
   const movies = useSelector(state => state.home.searchResults);
   const dispatch = useDispatch();
   const [searchQuery, setSearchQuery] = useState(storeSearchQuery);
@@ -35,7 +36,13 @@ export const SearchForm = () => {
   };
 
   return (
-    <Form className="ml-auto mr-sm-4" id="search-form">
+    <Form
+      className="ml-auto mr-sm-4"
+      id="search-form"
+      onSubmit={e => {
+        e.preventDefault();
+      }}
+    >
       <Autosuggest
         suggestions={movies}
         onSuggestionsFetchRequested={() => {}}
@@ -49,7 +56,17 @@ export const SearchForm = () => {
         renderInputComponent={inputProps => (
           <div className="has-search">
             <span className="form-control-feedback">
-              <FontAwesomeIcon icon={faSearch} />
+              {!storeIsSearching && <FontAwesomeIcon icon={faSearch} />}
+              {storeIsSearching && (
+                <Spinner
+                  animation="border"
+                  variant="secondary"
+                  size="sm"
+                  role="Search Status"
+                >
+                  <span className="sr-only">Searching...</span>
+                </Spinner>
+              )}
             </span>
             <FormControl {...inputProps} />
           </div>

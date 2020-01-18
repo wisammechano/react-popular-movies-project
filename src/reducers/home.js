@@ -19,11 +19,12 @@ const settings = JSON.parse(window.localStorage.getItem("settings")) || {};
 const initState = {
   movies: [],
   searchResults: [],
+  isSearching: false,
   searchError: null,
   error: null,
   searchQuery: "",
   selectedCategory: settings.selectedCategory || MOVIES_CATEGORIES.POPULAR,
-  selectedLanguage: settings.selectedLanguage || LANGUAGES.ARABIC,
+  selectedLanguage: settings.selectedLanguage || LANGUAGES.ENGLISH,
   configsLoaded: false,
   genresLoaded: false,
   showSettings: false
@@ -39,6 +40,7 @@ export default (state = initState, action) => {
       return {
         ...state,
         searchQuery: action.query,
+        isSearching: true,
         searchResults: [],
         searchError: null
       };
@@ -46,6 +48,7 @@ export default (state = initState, action) => {
       return {
         ...state,
         searchQuery: "",
+        isSearching: false,
         searchResults: [],
         searchError: null
       };
@@ -57,10 +60,11 @@ export default (state = initState, action) => {
       return {
         ...state,
         searchResults: action.data,
+        isSearching: false,
         searchError: null
       };
     case SEARCH_MOVIE_FAILURE:
-      return { ...state, searchError: action.error };
+      return { ...state, searchError: action.error, isSearching: false };
     case FETCH_CONFIG_SUCCESS:
       return { ...state, configsLoaded: true };
     case FETCH_GENRES_SUCCESS:
