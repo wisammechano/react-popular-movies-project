@@ -19,7 +19,7 @@
   max-height: 450px;
   border-radius: 4px;
   overflow: hidden;
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 4px rgba(0, 0, 0, 1);
 }
 
 .movie-poster img {

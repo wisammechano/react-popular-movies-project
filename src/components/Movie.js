@@ -9,6 +9,21 @@ import RatingCircle from "./RatingCircle";
 import ColorThief from "colorthief";
 import Color from "color";
 
+/* Movie body will have these sections
+    - Overview
+    - Cast
+    - Meta details:
+        - Budget
+        - Revenue
+        - Run time
+        - Production Countries
+        - Status & date
+        - Has a sequel? https://www.themoviedb.org/collection/645
+        - Language
+    - Reviews
+    - Recommendations
+*/
+
 export const Movie = ({ movie }) => {
   // Set the window title to the movie title
   document.title = movie.title;
@@ -19,7 +34,7 @@ export const Movie = ({ movie }) => {
 
   return (
     <>
-      <Overview movie={movie} images={images} />
+      <Overview movie={movie} images={images} id="overview" />
       <PageNavigator
         offsetElementTop={0}
         offsetContainerTop={0}
@@ -30,7 +45,7 @@ export const Movie = ({ movie }) => {
   );
 };
 
-const Overview = ({ movie, images }) => {
+const Overview = ({ movie, images, id }) => {
   const [prominentColor, setProminentColor] = useState(null);
 
   const original_language = find(languages, {
@@ -47,40 +62,51 @@ const Overview = ({ movie, images }) => {
     backdropSize = "w780";
   }
 
-  const updateColors = e => {
-    let color = Color.rgb(new ColorThief().getColor(e.target));
-    color = color.saturate(0.8);
-    if (color.isLight()) color = color.darken(0.5);
-    setProminentColor(color);
-  };
-
   // This will be used to extract the prominent color from the
   // backdrop image to apply a pleasant customization to the page
   useEffect(() => {
     if (!images.backdrop) return;
 
+    // We create this image only to extract colors from it
     const img = new Image();
+
+    //This line is required for the color thief library to work
     img.crossOrigin = "anonymous";
 
-    img.addEventListener("load", updateColors);
+    const onLoad = e => {
+      // Get the prominent color and saturate it
+      let color = Color.rgb(new ColorThief().getColor(e.target)).saturate(0.8);
 
+      // Adjust the color, since the text is white so if light color darken it
+      if (color.isLight()) color = color.darken(0.5);
+
+      // Set the state
+      setProminentColor(color);
+    };
+
+    // We tell the image, when you load, call the function that extracts the colors
+    img.addEventListener("load", onLoad);
+
+    // This will init image loading
     img.src = images.backdrop.w300;
 
     return () => {
       //clean up the listener
-      img.removeEventListener("load", updateColors);
+      img.removeEventListener("load", onLoad);
     };
-  }, [images]);
+  }, [images]); // adding [images] to the useCallback arguments is to make sure the callback will be called only if images change
 
+  // Main div styling
   const style = {};
   if (images.backdrop)
     style.backgroundImage = `url(${images.backdrop[backdropSize]})`;
 
   return (
-    <div className="movie-overview" style={style} id="overview">
+    <div className="movie-overview" style={style} id={id}>
       <div
         className={images.backdrop ? "has-backdrop" : ""}
         style={{
+          // If there is a backdrop and prominent color extracted, otherwise gray
           backgroundColor: prominentColor ? prominentColor.hex() : "#e3e3e3"
         }}
       >
@@ -91,12 +117,14 @@ const Overview = ({ movie, images }) => {
                 <Row>
                   <Col xs={12} md={5}>
                     <div className="my-2 my-md-5">
-                      <MoviePoster poster={images.poster.w500}></MoviePoster>
+                      <div className="movie-poster my-2 mx-auto m-md-2">
+                        <img src={images.poster.w500} alt="Movie Poster" />
+                      </div>
                     </div>
                   </Col>
                   <Col>
-                    <div className="movie-body-overview my-2 my-md-5">
-                      <div className="mb-5">
+                    <div className="my-2 my-md-5">
+                      <section className="mb-5">
                         <h3>{movie.title}</h3>
                         <span>
                           {release_date} | {original_language}
@@ -108,21 +136,28 @@ const Overview = ({ movie, images }) => {
                             </React.Fragment>
                           ))}
                         </div>
-                      </div>
-                      <h4>Score</h4>
-                      <div className="my-2 d-flex align-items-center">
-                        <RatingCircle
-                          color="#d8454c"
-                          width={60}
-                          value={movie.vote_average * 10}
-                        />
-
-                        <div className="mx-3">{movie.vote_count} votes</div>
-                      </div>
-                      <h4>Tagline</h4>
-                      <p>{movie.tagline}</p>
-                      <h4>Overview</h4>
-                      <p>{movie.overview}</p>
+                      </section>
+                      <section className="mb-5">
+                        <h4>Overview</h4>
+                        <p>{movie.overview || "Not available"}</p>
+                      </section>
+                      {movie.tagline && (
+                        <section className="mb-4">
+                          <h4>Tagline</h4>
+                          <p>{movie.tagline || "Not available"}</p>
+                        </section>
+                      )}
+                      <section>
+                        <h4>Score</h4>
+                        <div className="my-2 d-flex align-items-center">
+                          <RatingCircle
+                            color="#d8454c"
+                            width={60}
+                            value={movie.vote_average * 10}
+                          />
+                          <div className="mx-3">{movie.vote_count} votes</div>
+                        </div>
+                      </section>
                     </div>
                   </Col>
                 </Row>
@@ -137,94 +172,3 @@ const Overview = ({ movie, images }) => {
     </div>
   );
 };
-
-/* Movie body will have these sections
-    - Overview
-    - Cast
-    - Meta details:
-        - Budget
-        - Revenue
-        - Run time
-        - Production Countries
-        - Status & date
-        - Has a sequel? https://www.themoviedb.org/collection/645
-        - Language
-    - Reviews
-    - Recommendations
-*/
-export const MovieBody = ({ movie, images }) => (
-  <Container as="main" id="movie-body-container">
-    <Row>
-      <Col>
-        <div id="overview" className="py-2">
-          <Row>
-            <Col xs={12} md={5}>
-              <MoviePoster poster={images.poster.w500}></MoviePoster>
-            </Col>
-            <Col>
-              <div className="movie-body-overview my-2 my-md-5">
-                <h4>Score</h4>
-                <div className="my-2 d-flex align-items-center justify-content-center justify-content-md-start">
-                  <RatingCircle
-                    color="#d8454c"
-                    width={60}
-                    value={movie.vote_average * 10}
-                  />
-
-                  <div className="mx-3">{movie.vote_count} votes</div>
-                </div>
-                <h4>Tagline</h4>
-                <p>{movie.tagline}</p>
-                <h4>Overview</h4>
-                <p>{movie.overview}</p>
-              </div>
-            </Col>
-          </Row>
-        </div>
-        <div id="cast"></div>
-        <div id="details"></div>
-        <div id="reviews"></div>
-      </Col>
-    </Row>
-  </Container>
-);
-
-export const MoviePoster = ({ poster }) => (
-  <div className="movie-poster my-2 mx-auto m-md-2">
-    <img src={poster} alt="Movie Poster" />
-  </div>
-);
-
-export const MovieCover = ({
-  backdrop_url,
-  title,
-  release_date,
-  original_language,
-  genres
-}) => (
-  <div
-    className="movie-cover"
-    style={{
-      backgroundImage: backdrop_url ? `url(${backdrop_url})` : "",
-      backgroundColor: !backdrop_url ? "#fff" : ""
-    }}
-  >
-    <div className="movie-cover-overlay">
-      <div className="container movie-cover-meta">
-        <div className="m-3">
-          <h3>{title}</h3>
-          <span>
-            {release_date} | {original_language}
-          </span>
-          <div>
-            {genres.map(genre => (
-              <React.Fragment key={genre.id}>
-                <Badge variant="dark">{genre.name}</Badge>{" "}
-              </React.Fragment>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-);
