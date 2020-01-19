@@ -10,7 +10,7 @@
   opacity: 0.9;
   text-shadow: 1px 2px 1px #000;
   color: #fff;
-  min-height: calc(90vh - 55px);
+  /* min-height: calc(90vh - 55px); */
   transition: all 0.5s;
 }
 
