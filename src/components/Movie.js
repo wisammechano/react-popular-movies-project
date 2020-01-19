@@ -8,6 +8,7 @@ import PageNavigator from "./PageNavigator";
 import RatingCircle from "./RatingCircle";
 import ColorThief from "colorthief";
 import Color from "color";
+import { URL_YOUTUBE } from "../constants";
 
 /* Movie body will have these sections
     - Overview
@@ -111,12 +112,14 @@ const Extra = ({ movie, id }) => {
             <p>{extra.Revenue}</p>
           </Col>
         </Row>
-        {trailers.length && (
+        {trailers.length > 0 && (
           <Row>
-            <Col>Trailers</Col>
+            <Col>
+              <h6>Trailers</h6>
+            </Col>
           </Row>
         )}
-        {trailers.length && (
+        {trailers.length > 0 && (
           <Row>
             {trailers.map(tr => (
               <Col key={tr.key} xs={12} lg={4}>
@@ -136,7 +139,7 @@ const YouTubeEmbed = ({ title, video, width = 320, height = 180 }) => (
   <iframe
     title={title}
     className="embed-responsive-item"
-    src={"https://www.youtube.com/embed/" + video}
+    src={URL_YOUTUBE + video}
     frameborder="0"
     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
     allowfullscreen="on"
