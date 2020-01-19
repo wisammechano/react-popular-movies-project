@@ -25,3 +25,24 @@
 .movie-poster img {
   width: 100%;
 }
+
+.movie-cast-container {
+  min-width: 100%;
+  max-width: 1000px;
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+
+.movie-cast-container .card {
+  margin: 5px;
+  min-width: 130px;
+  width: 130px;
+}
+
+@media screen and (min-width: 768px) {
+  .movie-cast-container .card {
+    min-width: 190px;
+    width: 190px;
+  }
+}
