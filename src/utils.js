@@ -82,7 +82,11 @@ export class ApiError extends Error {
   }
 }
 
-export function disableReactDevTools() {
+export const isNarrowScreen = (reference = 768) => {
+  return window.innerWidth <= reference;
+};
+
+export const disableReactDevTools = () => {
   function isFunction(obj) {
     return typeof obj == "function" || false;
   }
@@ -112,4 +116,4 @@ export function disableReactDevTools() {
       ? []
       : null;
   }
-}
+};
