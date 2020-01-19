@@ -40,6 +40,12 @@
   width: 130px;
 }
 
+.movie-extra-trailer-card {
+  border: 1px solid #a3a3a3;
+  border-radius: 5px;
+  margin: 5px;
+}
+
 @media screen and (min-width: 768px) {
   .movie-cast-container .card {
     min-width: 190px;

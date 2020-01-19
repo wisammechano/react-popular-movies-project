@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import languages from "../constants/languages";
-import { find } from "lodash";
+import { find, filter } from "lodash";
 import { getImagesUrl, isNarrowScreen } from "../utils";
 import { Badge, Container, Row, Col, Card } from "react-bootstrap";
 import PageNavigator from "./PageNavigator";
@@ -36,6 +36,7 @@ export const Movie = ({ movie }) => {
     <>
       <Overview movie={movie} images={images} id="overview" />
       <Cast cast={movie.credits.cast.slice(0, 5)} id="cast" />
+      <Extra movie={movie} id="extra" />
       <PageNavigator
         offsetElementTop={0}
         offsetContainerTop={0}
@@ -45,6 +46,102 @@ export const Movie = ({ movie }) => {
     </>
   );
 };
+
+const Extra = ({ movie, id }) => {
+  const usReleaseDate = find(
+    movie.release_dates.results,
+    rel => rel.iso_3166_1 === "US"
+  );
+  const extra = {
+    Status: movie.status,
+    ReleaseDate: new Date(movie.release_date).toDateString().substr(4),
+    Rating: usReleaseDate ? usReleaseDate.release_dates[0].certification : "-",
+    ProductionCountries: movie.production_countries
+      .map(pc => pc.name)
+      .join(", "),
+
+    Runtime: movie.runtime
+      ? Math.floor(movie.runtime / 60) + "hr " + (movie.runtime % 60) + "mins"
+      : "-",
+
+    Budget: movie.budget ? "$" + movie.budget : "-",
+    Revenue: movie.revenue ? "$" + movie.revenue : "-"
+  };
+
+  const trailers = filter(
+    movie.videos.results,
+    vid => vid.site === "YouTube"
+  ).slice(0, 3);
+
+  return (
+    <div className="movie-extra py-3" id={id}>
+      <Container>
+        <Row>
+          <Col>
+            <h4>Extra</h4>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <h6>Status</h6>
+            <p>
+              {extra.Status} <br></br>({extra.ReleaseDate})
+            </p>
+          </Col>
+          <Col>
+            <h6>Rating</h6>
+            <p>{extra.Rating ? extra.Rating : "Not Rated"}</p>
+          </Col>
+          <Col>
+            <h6>Production Countries</h6>
+            <p>{extra.ProductionCountries}</p>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <h6>Runtime</h6>
+            <p>{extra.Runtime}</p>
+          </Col>
+          <Col>
+            <h6>Budget</h6>
+            <p>{extra.Budget}</p>
+          </Col>
+          <Col>
+            <h6>Revenue</h6>
+            <p>{extra.Revenue}</p>
+          </Col>
+        </Row>
+        {trailers.length && (
+          <Row>
+            <Col>Trailers</Col>
+          </Row>
+        )}
+        {trailers.length && (
+          <Row>
+            {trailers.map(tr => (
+              <Col key={tr.key} xs={12} lg={4}>
+                <div className="movie-extra-trailer-card embed-responsive embed-responsive-16by9">
+                  <YouTubeEmbed title={tr.name} video={tr.key} />
+                </div>
+              </Col>
+            ))}
+          </Row>
+        )}
+      </Container>
+    </div>
+  );
+};
+
+const YouTubeEmbed = ({ title, video, width = 320, height = 180 }) => (
+  <iframe
+    title={title}
+    className="embed-responsive-item"
+    src={"https://www.youtube.com/embed/" + video}
+    frameborder="0"
+    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen="on"
+  />
+);
 
 const Cast = ({ cast, id }) => {
   return (
