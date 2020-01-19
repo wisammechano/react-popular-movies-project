@@ -42,8 +42,8 @@ export function getImagesUrl(obj, config) {
   return urls;
 }
 
-export const fetchJson = url => {
-  return fetch(url)
+export const fetchJson = (url, options = {}) => {
+  return fetch(url, options)
     .then(res => {
       if (res.headers.get("content-type").indexOf("application/json") !== -1)
         return res.json();
