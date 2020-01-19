@@ -17,7 +17,12 @@ export const URL_SEARCH = URL_BASE + "/search/movie?query=";
 export const URL_YOUTUBE = "https://www.youtube.com/embed/";
 
 export const URL_REVIEWS = "/reviews";
-export const MOVIE_DETAILS_EXTRA = ["credits", "videos", "similar"];
+export const MOVIE_DETAILS_EXTRA = [
+  "credits",
+  "videos",
+  "similar",
+  "release_dates"
+];
 export const MOVIE_APPEND_PARAMETER =
   "&append_to_response=" + MOVIE_DETAILS_EXTRA.join(",");
 
