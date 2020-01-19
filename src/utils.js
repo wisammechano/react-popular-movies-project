@@ -81,3 +81,35 @@ export class ApiError extends Error {
     this.name = "HttpError";
   }
 }
+
+export function disableReactDevTools() {
+  function isFunction(obj) {
+    return typeof obj == "function" || false;
+  }
+
+  function isArray(obj) {
+    return typeof obj.forEach == "function";
+  }
+
+  function isObject(obj) {
+    var type = typeof obj;
+    return type === "function" || (type === "object" && !!obj);
+  }
+  // Ensure the React Developer Tools global hook exists
+  if (!isObject(window.__REACT_DEVTOOLS_GLOBAL_HOOK__)) {
+    return;
+  }
+
+  const NO_OP = () => {};
+
+  // Replace all global hook properties with a no-op function or a null value
+  for (const prop in window.__REACT_DEVTOOLS_GLOBAL_HOOK__) {
+    window.__REACT_DEVTOOLS_GLOBAL_HOOK__[prop] = isFunction(
+      window.__REACT_DEVTOOLS_GLOBAL_HOOK__[prop]
+    )
+      ? NO_OP
+      : isArray(window.__REACT_DEVTOOLS_GLOBAL_HOOK__[prop])
+      ? []
+      : null;
+  }
+}
