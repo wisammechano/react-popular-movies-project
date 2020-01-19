@@ -23,15 +23,20 @@ const MoviePage = props => {
   const id = useParams().id;
 
   useEffect(() => {
-    //Scroll to top of page
-    const page = document.getElementById("movie-page");
-    page.focus();
-    if (page.scrollIntoView) page.scrollIntoView();
-    const url_movie =
-      URL_MOVIE + "/" + id + API_KEY + MOVIE_APPEND_PARAMETER + lang;
+    const abortController = new AbortController();
+    const signal = abortController.signal;
+
+    // Reset the state when id or lang changes
     setState({ movie: null, isLoading: true, error: null });
 
-    fetchJson(url_movie)
+    //Scroll to top of page
+    const page = document.getElementById("movie-page");
+    if (page.scrollIntoView) page.scrollIntoView();
+
+    const url_movie =
+      URL_MOVIE + "/" + id + API_KEY + MOVIE_APPEND_PARAMETER + lang;
+
+    fetchJson(url_movie, { signal: signal })
       .then(json => setState({ error: null, movie: json, isLoading: false }))
       .catch(err =>
         setState({
@@ -40,6 +45,11 @@ const MoviePage = props => {
           movie: null
         })
       );
+
+    return () => {
+      //clean up
+      abortController.abort();
+    };
   }, [id, lang]);
 
   return (
