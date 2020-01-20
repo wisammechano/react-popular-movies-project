@@ -140,9 +140,9 @@ const YouTubeEmbed = ({ title, video, width = 320, height = 180 }) => (
     title={title}
     className="embed-responsive-item"
     src={URL_YOUTUBE + video}
-    frameborder="0"
+    frameBorder="0"
     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-    allowfullscreen="on"
+    allowFullScreen="on"
   />
 );
 
