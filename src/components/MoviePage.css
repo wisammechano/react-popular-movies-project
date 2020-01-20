@@ -1,0 +1,54 @@
+.movie-overview {
+  background: #fff;
+  transition: all 1s;
+  background-size: cover;
+  background-position-x: center;
+  background-repeat: no-repeat;
+}
+
+.movie-overview .has-backdrop {
+  opacity: 0.9;
+  text-shadow: 1px 2px 1px #000;
+  color: #fff;
+  /* min-height: calc(90vh - 55px); */
+  transition: all 0.5s;
+}
+
+.movie-poster {
+  max-width: 300px;
+  max-height: 450px;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 1);
+}
+
+.movie-poster img {
+  width: 100%;
+}
+
+.movie-cast-container {
+  min-width: 100%;
+  max-width: 1000px;
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+
+.movie-cast-container .card {
+  margin: 5px;
+  min-width: 130px;
+  width: 130px;
+}
+
+.movie-extra-trailer-card {
+  border: 1px solid #a3a3a3;
+  border-radius: 5px;
+  margin: 5px;
+}
+
+@media screen and (min-width: 768px) {
+  .movie-cast-container .card {
+    min-width: 190px;
+    width: 190px;
+  }
+}

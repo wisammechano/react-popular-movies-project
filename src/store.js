@@ -6,18 +6,31 @@ import { routerMiddleware } from "connected-react-router";
 import { createBrowserHistory } from "history";
 import thunk from "redux-thunk";
 
+import { localStorageMiddleware } from "./middleware";
+
 export const history = createBrowserHistory();
 
-const middleware = [thunk, routerMiddleware(history)];
+// Build the middleware for intercepting and dispatching navigation actions
+const myRouterMiddleware = routerMiddleware(history);
 
-if (process.env.NODE_ENV !== "production") {
-  middleware.push(createLogger());
-}
+const middleware = [thunk, myRouterMiddleware, localStorageMiddleware];
 
-export function configStore(initState) {
-  return createStore(
+const getMiddleware = () => {
+  if (process.env.NODE_ENV === "production") {
+    return applyMiddleware(...middleware);
+  } else {
+    // Enable additional logging in non-production environments.
+    return applyMiddleware(...middleware, createLogger());
+  }
+};
+
+//read more at https://redux.js.org/api/createstore
+export default function configureStore(preloadedState) {
+  const store = createStore(
     createRootReducer(history),
-    initState,
-    composeWithDevTools(applyMiddleware(...middleware))
+    preloadedState,
+    composeWithDevTools(getMiddleware())
   );
+
+  return store;
 }

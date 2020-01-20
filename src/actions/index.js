@@ -23,27 +23,34 @@ import {
   MOVIE_APPEND_PARAMETER,
   API_KEY_PARAM as API_KEY,
   API_KEY_ALT_PARAM as API_KEY_ALT,
-  MOVIES_CATEGORIES,
-  MOVIE_LANG_PARAMETER_AR,
-  MOVIE_LANG_PARAMETER_US
+  MOVIES_CATEGORIES
 } from "../constants";
+import { fetchJson } from "../utils";
+import { debounce } from "lodash";
+
+export const TOGGLE_SETTINGS_MODAL = "TOGGLE_SETTINGS_MODAL";
+
+export function toggleSettingsModal(toggle) {
+  return {
+    type: TOGGLE_SETTINGS_MODAL,
+    toggle
+  };
+}
 
 export const SELECT_CATEGORY = "SELECT_CATEGORY";
 
 export function changeCategory(category) {
-  return dispatch =>
-    dispatch({
-      type: SELECT_CATEGORY,
-      category
-    });
+  return {
+    type: SELECT_CATEGORY,
+    category
+  };
 }
 
 export function changeLanguage(language) {
-  return dispatch =>
-    dispatch({
-      type: SELECT_LANGUAGE,
-      language
-    });
+  return {
+    type: SELECT_LANGUAGE,
+    language
+  };
 }
 
 export const SELECT_LANGUAGE = "SELECT_LANGUAGE";
@@ -74,18 +81,17 @@ function fetchConfigFailure(error) {
 
 export function fetchConfigurations() {
   return dispatch => {
-    dispatch(fetchConfig);
-
-    return fetch(URL_CONFIG + API_KEY)
-      .then(response => response.json())
+    dispatch(fetchConfig());
+    return fetchJson(URL_CONFIG + API_KEY)
       .then(json => dispatch(fetchConfigSuccess(json)))
-      .catch(error => dispatch(fetchConfigFailure(error)));
+      .catch(error => dispatch(fetchConfigFailure(error.message)));
   };
 }
 
 export const SEARCH_MOVIE = "SEARCH_MOVIE";
 export const SEARCH_MOVIE_SUCCESS = "SEARCH_MOVIE_SUCCESS";
 export const SEARCH_MOVIE_FAILURE = "SEARCH_MOVIE_FAILURE";
+export const RESET_SERACH = "RESET_SEARCH";
 
 function searchMovie(query) {
   return {
@@ -109,17 +115,28 @@ function searchMovieFail(error) {
   };
 }
 
+const debouncedSearch = debounce((dispatch, getState, query) => {
+  const lang = getState().home.selectedLanguage.code;
+
+  let url = URL_SEARCH + query + API_KEY_ALT + lang;
+  if (query.length === 0) {
+    return dispatch(resetSearchMovies());
+  }
+  dispatch(searchMovie(query));
+  return fetchJson(url)
+    .then(json => dispatch(searchMovieSuccess(json.results)))
+    .catch(error => dispatch(searchMovieFail(error.message)));
+}, 350);
+
 export function searchMovieList(query) {
-  let url = URL_SEARCH + query + API_KEY_ALT;
+  return (dispatch, getState) => {
+    return debouncedSearch(dispatch, getState, query);
+  };
+}
 
-  return dispatch => {
-    dispatch(searchMovie());
-
-    return fetch(url)
-      .then(response => response.json())
-      .then(json => json.results)
-      .then(data => dispatch(searchMovieSuccess(data, query)))
-      .catch(error => dispatch(searchMovieFail(error)));
+export function resetSearchMovies() {
+  return {
+    type: RESET_SERACH
   };
 }
 
@@ -148,13 +165,12 @@ function fetchGenresFail(error) {
 }
 
 export function fetchGenresList() {
-  return dispatch => {
+  return (dispatch, getState) => {
+    const lang = getState().home.selectedLanguage.code;
     dispatch(fetchGenres());
-    return fetch(URL_GENRES + API_KEY)
-      .then(response => response.json())
-      .then(json => json.results)
-      .then(data => dispatch(fetchGenresSuccess(data)))
-      .catch(error => dispatch(fetchGenresFail(error)));
+    return fetchJson(URL_GENRES + API_KEY + lang)
+      .then(json => dispatch(fetchGenresSuccess(json.genres)))
+      .catch(error => dispatch(fetchGenresFail(error.message)));
   };
 }
 
@@ -185,33 +201,32 @@ function fetchMoviesFail(error) {
 export function fetchMoviesList() {
   return (dispatch, getState) => {
     dispatch(fetchMovies());
-
-    const category = MOVIES_CATEGORIES.POPULAR; //getState().home.selectedCategory;
+    const state = getState();
+    const category = state.home.selectedCategory.code;
+    const lang = state.home.selectedLanguage.code;
     let url;
 
     switch (category) {
-      case MOVIES_CATEGORIES.LATEST:
+      case MOVIES_CATEGORIES.LATEST.code:
         url = URL_MOVIES_LATEST;
         break;
-      case MOVIES_CATEGORIES.UPCOMING:
+      case MOVIES_CATEGORIES.UPCOMING.code:
         url = URL_MOVIES_UPCOMING;
         break;
-      case MOVIES_CATEGORIES.NOW_PLAYING:
+      case MOVIES_CATEGORIES.NOW_PLAYING.code:
         url = URL_MOVIES_NOW_PLAYING;
         break;
-      case MOVIES_CATEGORIES.TOP_RATED:
+      case MOVIES_CATEGORIES.TOP_RATED.code:
         url = URL_MOVIES_TOP_RATED;
         break;
-      case MOVIES_CATEGORIES.POPULAR:
+      case MOVIES_CATEGORIES.POPULAR.code:
       default:
         url = URL_MOVIES_POPULAR;
     }
 
-    return fetch(url + API_KEY)
-      .then(response => response.json())
-      .then(json => json.results)
-      .then(data => dispatch(fetchMoviesSuccess(data)))
-      .catch(error => dispatch(fetchMoviesFail(error)));
+    return fetchJson(url + API_KEY + lang)
+      .then(json => dispatch(fetchMoviesSuccess(json.results)))
+      .catch(error => dispatch(fetchMoviesFail(error.message)));
   };
 }
 
@@ -243,10 +258,9 @@ export function fetchMovieDetail(id) {
   const url_movie = URL_MOVIE + id + API_KEY + MOVIE_APPEND_PARAMETER;
   return dispatch => {
     dispatch(fetchMovie());
-    return fetch(url_movie)
-      .then(response => response.json())
-      .then(data => dispatch(fetchMovieSuccess(data)))
-      .catch(error => dispatch(fetchMovieFail(error)));
+    return fetchJson(url_movie)
+      .then(json => dispatch(fetchMovieSuccess(json)))
+      .catch(error => dispatch(fetchMovieFail(error.message)));
   };
 }
 
@@ -277,12 +291,8 @@ function fetchReviewsFail(error) {
 export function fetchReviewsList(id) {
   return function(dispatch) {
     dispatch(fetchReviews());
-    return fetch(URL_GENRES + API_KEY)
-      .then(response => response.json())
-      .then(json => json.results)
-      .then(data => {
-        dispatch(fetchReviewsSuccess(data));
-      })
-      .catch(error => dispatch(fetchReviewsFail(error)));
+    return fetchJson(URL_GENRES + API_KEY)
+      .then(json => dispatch(fetchReviewsSuccess(json.results)))
+      .catch(error => dispatch(fetchReviewsFail(error.message)));
   };
 }

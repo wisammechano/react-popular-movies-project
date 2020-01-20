@@ -1,0 +1,16 @@
+.App {
+    max-height: 100vh;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.App-header {
+    box-shadow: 0 1px 5px #4a4a4a;
+    max-height: 3.5em;
+}
+
+.App-page-wrapper {
+    overflow: auto;
+    scroll-behavior: smooth;
+}
