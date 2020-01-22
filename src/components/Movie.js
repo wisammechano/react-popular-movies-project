@@ -115,7 +115,7 @@ const Reviews = ({ movie, id }) => {
                         handleExpand(idx);
                       }}
                       type="button"
-                      class="btn btn-sm btn-outline-secondary"
+                      className="btn btn-sm btn-outline-secondary"
                     >
                       {needsTrimming ? "See more" : "See less"}
                     </button>
