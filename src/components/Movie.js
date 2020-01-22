@@ -2,13 +2,18 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import languages from "../constants/languages";
 import { find, filter } from "lodash";
-import { getImagesUrl, isNarrowScreen } from "../utils";
+import { getImagesUrl, isNarrowScreen, fetchJson } from "../utils";
 import { Badge, Container, Row, Col, Card } from "react-bootstrap";
 import PageNavigator from "./PageNavigator";
 import RatingCircle from "./RatingCircle";
 import ColorThief from "colorthief";
 import Color from "color";
-import { URL_YOUTUBE } from "../constants";
+import {
+  URL_YOUTUBE,
+  URL_REVIEWS,
+  API_KEY_PARAM as API_KEY,
+  URL_MOVIE
+} from "../constants";
 
 /* Movie body will have these sections
     - Overview
@@ -38,6 +43,7 @@ export const Movie = ({ movie }) => {
       <Overview movie={movie} images={images} id="overview" />
       <Cast cast={movie.credits.cast.slice(0, 5)} id="cast" />
       <Extra movie={movie} id="extra" />
+      <Reviews movie={movie} id="reviews" />
       <PageNavigator
         offsetElementTop={0}
         offsetContainerTop={0}
@@ -45,6 +51,53 @@ export const Movie = ({ movie }) => {
         items={["Overview", "Cast", "Extra", "Reviews", "Recommendations"]}
       />
     </>
+  );
+};
+
+const Reviews = ({ movie, id }) => {
+  const [reviews, setReviews] = useState([]);
+
+  useEffect(() => {
+    const url_reviews = URL_MOVIE + "/" + movie.id + URL_REVIEWS + API_KEY;
+    setReviews([]);
+    const abortController = new AbortController();
+    const signal = abortController.signal;
+
+    fetchJson(url_reviews, { signal: signal })
+      .then(json => setReviews(json.results))
+      .catch(err => console.log(err));
+
+    return () => {
+      //clean up
+      abortController.abort();
+    };
+  }, [movie]);
+
+  return (
+    <div className="movie-reviews py-3" id={id}>
+      <Container>
+        <Row>
+          <Col>
+            <h4>Reviews</h4>
+          </Col>
+        </Row>
+        {!reviews.length && (
+          <Row>
+            <Col>No reviews...</Col>
+          </Row>
+        )}
+        {reviews.map(review => (
+          <Row>
+            <Col>
+              <div className="m-3">
+                <h6>{review.author}</h6>
+                <p>{review.content}</p>
+              </div>
+            </Col>
+          </Row>
+        ))}
+      </Container>
+    </div>
   );
 };
 
