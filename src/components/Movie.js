@@ -56,6 +56,7 @@ export const Movie = ({ movie }) => {
 
 const Reviews = ({ movie, id }) => {
   const [reviews, setReviews] = useState([]);
+  const [expandedList, setExpandedList] = useState({});
 
   useEffect(() => {
     const url_reviews = URL_MOVIE + "/" + movie.id + URL_REVIEWS + API_KEY;
@@ -73,6 +74,11 @@ const Reviews = ({ movie, id }) => {
     };
   }, [movie]);
 
+  const handleExpand = idx => {
+    const currentIdxState = expandedList[idx] ? expandedList[idx] : false;
+    setExpandedList({ ...expandedList, [idx]: !currentIdxState });
+  };
+
   return (
     <div className="movie-reviews py-3" id={id}>
       <Container>
@@ -86,16 +92,39 @@ const Reviews = ({ movie, id }) => {
             <Col>No reviews...</Col>
           </Row>
         )}
-        {reviews.map(review => (
-          <Row>
-            <Col>
-              <div className="m-3">
-                <h6>{review.author}</h6>
-                <p>{review.content}</p>
-              </div>
-            </Col>
-          </Row>
-        ))}
+        {reviews.map((review, idx) => {
+          const needsTrimming =
+            review.content.length >= 300 && !expandedList[idx];
+
+          const content = needsTrimming
+            ? review.content.substr(0, 300)
+            : review.content;
+
+          return (
+            <Row key={review.id}>
+              <Col>
+                <div className="review-item m-3">
+                  <h6>{review.author}</h6>
+                  <p>
+                    {content}
+                    {needsTrimming ? "..." : ""}
+                  </p>
+                  <div className="d-flex justify-content-end">
+                    <button
+                      onClick={e => {
+                        handleExpand(idx);
+                      }}
+                      type="button"
+                      class="btn btn-sm btn-outline-secondary"
+                    >
+                      {needsTrimming ? "See more" : "See less"}
+                    </button>
+                  </div>
+                </div>
+              </Col>
+            </Row>
+          );
+        })}
       </Container>
     </div>
   );
