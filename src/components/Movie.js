@@ -12,8 +12,10 @@ import {
   URL_YOUTUBE,
   URL_REVIEWS,
   API_KEY_PARAM as API_KEY,
-  URL_MOVIE
+  URL_MOVIE,
 } from "../constants";
+
+import castPlaceholder from "../imgs/profile-placeholder.jpg";
 
 /* Movie body will have these sections
     - Overview
@@ -34,7 +36,7 @@ export const Movie = ({ movie }) => {
   // Set the window title to the movie title
   document.title = movie.title;
 
-  const config = useSelector(state => state.configurations);
+  const config = useSelector((state) => state.configurations);
 
   const images = getImagesUrl(movie, config);
 
@@ -65,8 +67,8 @@ const Reviews = ({ movie, id }) => {
     const signal = abortController.signal;
 
     fetchJson(url_reviews, { signal: signal })
-      .then(json => setReviews(json.results))
-      .catch(err => console.log(err));
+      .then((json) => setReviews(json.results))
+      .catch((err) => console.log(err));
 
     return () => {
       //clean up
@@ -74,7 +76,7 @@ const Reviews = ({ movie, id }) => {
     };
   }, [movie]);
 
-  const handleExpand = idx => {
+  const handleExpand = (idx) => {
     const currentIdxState = expandedList[idx] ? expandedList[idx] : false;
     setExpandedList({ ...expandedList, [idx]: !currentIdxState });
   };
@@ -111,7 +113,7 @@ const Reviews = ({ movie, id }) => {
                   </p>
                   <div className="d-flex justify-content-end">
                     <button
-                      onClick={e => {
+                      onClick={(e) => {
                         handleExpand(idx);
                       }}
                       type="button"
@@ -133,14 +135,14 @@ const Reviews = ({ movie, id }) => {
 const Extra = ({ movie, id }) => {
   const usReleaseDate = find(
     movie.release_dates.results,
-    rel => rel.iso_3166_1 === "US"
+    (rel) => rel.iso_3166_1 === "US"
   );
   const extra = {
     Status: movie.status,
     ReleaseDate: new Date(movie.release_date).toDateString().substr(4),
     Rating: usReleaseDate ? usReleaseDate.release_dates[0].certification : "-",
     ProductionCountries: movie.production_countries
-      .map(pc => pc.name)
+      .map((pc) => pc.name)
       .join(", "),
 
     Runtime: movie.runtime
@@ -148,12 +150,12 @@ const Extra = ({ movie, id }) => {
       : "-",
 
     Budget: movie.budget ? "$" + movie.budget : "-",
-    Revenue: movie.revenue ? "$" + movie.revenue : "-"
+    Revenue: movie.revenue ? "$" + movie.revenue : "-",
   };
 
   const trailers = filter(
     movie.videos.results,
-    vid => vid.site === "YouTube"
+    (vid) => vid.site === "YouTube"
   ).slice(0, 3);
 
   return (
@@ -203,7 +205,7 @@ const Extra = ({ movie, id }) => {
         )}
         {trailers.length > 0 && (
           <Row>
-            {trailers.map(tr => (
+            {trailers.map((tr) => (
               <Col key={tr.key} xs={12} lg={4}>
                 <div className="movie-extra-trailer-card embed-responsive embed-responsive-16by9">
                   <YouTubeEmbed title={tr.name} video={tr.key} />
@@ -245,14 +247,14 @@ const Cast = ({ cast, id }) => {
                 (cast.length > 3 ? " justify-content-md-between" : "")
               }
             >
-              {cast.map(char => (
+              {cast.map((char) => (
                 <Card key={char.cast_id}>
                   <Card.Img
                     variant="top"
                     src={
                       char.profile_path
                         ? "//images.tmdb.org/t/p/w185" + char.profile_path
-                        : "/imgs/profile-placeholder.jpg"
+                        : castPlaceholder
                     }
                   />
                   <Card.Body>
@@ -277,7 +279,7 @@ const Overview = ({ movie, images, id }) => {
 
   const original_language = find(
     languages,
-    l => l.iso_639_1 === movie.original_language
+    (l) => l.iso_639_1 === movie.original_language
   ).english_name;
 
   const release_date = movie.release_date
@@ -298,7 +300,7 @@ const Overview = ({ movie, images, id }) => {
     //This line is required for the color thief library to work
     img.crossOrigin = "anonymous";
 
-    const onLoad = e => {
+    const onLoad = (e) => {
       // Get the prominent color and saturate it
       let color = Color.rgb(new ColorThief().getColor(e.target)).saturate(0.8);
 
@@ -332,7 +334,7 @@ const Overview = ({ movie, images, id }) => {
         className={images.backdrop ? "has-backdrop" : ""}
         style={{
           // If there is a backdrop and prominent color extracted, otherwise gray
-          backgroundColor: prominentColor ? prominentColor.hex() : "#e3e3e3"
+          backgroundColor: prominentColor ? prominentColor.hex() : "#e3e3e3",
         }}
       >
         <Container as="main" id="movie-body-container">
@@ -352,7 +354,7 @@ const Overview = ({ movie, images, id }) => {
                     {release_date} | {original_language}
                   </span>
                   <div>
-                    {movie.genres.map(genre => (
+                    {movie.genres.map((genre) => (
                       <React.Fragment key={genre.id}>
                         <Badge variant="dark">{genre.name}</Badge>{" "}
                       </React.Fragment>

@@ -21,7 +21,7 @@
     height: 50px;
     width: 200%;
     margin-top: 50%;
-    background: url(/imgs/film.png);
+    background: url(../imgs/film.png);
     background-repeat: repeat-x;
     background-size: 150px;
     background-position: center;
