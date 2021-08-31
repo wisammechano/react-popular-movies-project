@@ -1,4 +1,4 @@
-import { FETCH_CONFIG_SUCCESS } from "../actions";
+import { FETCH_CONFIG_SUCCESS } from '../actions';
 
 const initState = {};
 

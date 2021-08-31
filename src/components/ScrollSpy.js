@@ -1,5 +1,5 @@
-import PropTypes from "prop-types";
-import React from "react";
+import PropTypes from 'prop-types';
+import React from 'react';
 
 const customThrottler = (fn, threshold = 100) => {
   // Used this instead of lodash/throttle
@@ -47,20 +47,20 @@ export default class Scrollspy extends React.Component {
       offsetContainerTop: PropTypes.number,
       offsetContainerBottom: PropTypes.number,
       rootEl: PropTypes.string,
-      onUpdate: PropTypes.func
+      onUpdate: PropTypes.func,
     };
   }
 
   static get defaultProps() {
     return {
       items: [],
-      currentClassName: "",
+      currentClassName: '',
       style: {},
-      componentTag: "ul",
+      componentTag: 'ul',
       offsetElementTop: 0,
       offsetContainerTop: 0,
       offsetContainerBottom: 0,
-      onUpdate() {}
+      onUpdate() {},
     };
   }
 
@@ -70,7 +70,7 @@ export default class Scrollspy extends React.Component {
     this.state = {
       targetItems: [],
       inViewState: [],
-      isScrolledPast: []
+      isScrolledPast: [],
     };
 
     // manually bind as ES6 does not apply this
@@ -79,7 +79,7 @@ export default class Scrollspy extends React.Component {
   }
 
   _initSpyTarget(items) {
-    const targetItems = items.map(item => {
+    const targetItems = items.map((item) => {
       return document.getElementById(item);
     });
 
@@ -117,7 +117,7 @@ export default class Scrollspy extends React.Component {
 
     return {
       scrollTop,
-      scrollHeight
+      scrollHeight,
     };
   }
 
@@ -169,7 +169,7 @@ export default class Scrollspy extends React.Component {
       viewStatusList,
       scrolledPast:
         this.props.scrolledPastClassName &&
-        this._getScrolledPast(viewStatusList)
+        this._getScrolledPast(viewStatusList),
     };
   }
 
@@ -182,7 +182,7 @@ export default class Scrollspy extends React.Component {
       rootEl,
       offsetElementTop,
       offsetContainerTop,
-      offsetContainerBottom
+      offsetContainerBottom,
     } = this.props;
     let rootRect;
 
@@ -203,7 +203,7 @@ export default class Scrollspy extends React.Component {
     //return elTop < referenceLine && elBottom > referenceLine;
     //console.log(Math.floor(scrollTop), Math.floor(scrollBottom));
 
-    el.id == "overview" &&
+    el.id == 'overview' &&
       false &&
       console.log(
         [
@@ -211,7 +211,7 @@ export default class Scrollspy extends React.Component {
           elBottom,
           scrollTop,
           scrollBottom,
-          scrollBottom - scrollTop
+          scrollBottom - scrollTop,
         ].map(Math.round),
         elTop < scrollBottom && elBottom > scrollTop,
         el.id
@@ -231,13 +231,13 @@ export default class Scrollspy extends React.Component {
   }
 
   _getScrolledPast(viewStatusList) {
-    if (!viewStatusList.some(item => item)) {
+    if (!viewStatusList.some((item) => item)) {
       return viewStatusList;
     }
 
     let hasFoundInView = false;
 
-    const scrolledPastItems = viewStatusList.map(item => {
+    const scrolledPastItems = viewStatusList.map((item) => {
       if (item && !hasFoundInView) {
         hasFoundInView = true;
 
@@ -257,7 +257,7 @@ export default class Scrollspy extends React.Component {
     this.setState(
       {
         inViewState: elemensViewState.viewStatusList,
-        isScrolledPast: elemensViewState.scrolledPast
+        isScrolledPast: elemensViewState.scrolledPast,
       },
       () => {
         this._update(currentStatuses);
@@ -279,7 +279,7 @@ export default class Scrollspy extends React.Component {
     const targetItems = this._initSpyTarget(this.props.items);
 
     this.setState({
-      targetItems
+      targetItems,
     });
 
     this._spy(targetItems);
@@ -290,7 +290,7 @@ export default class Scrollspy extends React.Component {
       ? document.querySelector(this.props.rootEl)
       : window;
 
-    el.removeEventListener("scroll", this._handleSpy);
+    el.removeEventListener('scroll', this._handleSpy);
   }
 
   onEvent() {
@@ -298,7 +298,7 @@ export default class Scrollspy extends React.Component {
       ? document.querySelector(this.props.rootEl)
       : window;
 
-    el.addEventListener("scroll", this._handleSpy);
+    el.addEventListener('scroll', this._handleSpy);
   }
 
   componentDidMount() {
@@ -334,7 +334,7 @@ export default class Scrollspy extends React.Component {
       return (
         <ChildTag
           {...child.props}
-          className={childClass.join(" ")}
+          className={childClass.join(' ')}
           key={counter++}
         >
           {child.props.children}

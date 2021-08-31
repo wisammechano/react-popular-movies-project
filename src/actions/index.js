@@ -23,80 +23,80 @@ import {
   MOVIE_APPEND_PARAMETER,
   API_KEY_PARAM as API_KEY,
   API_KEY_ALT_PARAM as API_KEY_ALT,
-  MOVIES_CATEGORIES
-} from "../constants";
-import { fetchJson } from "../utils";
-import { debounce } from "lodash";
+  MOVIES_CATEGORIES,
+} from '../constants';
+import { fetchJson } from '../utils';
+import { debounce } from 'lodash';
 
-export const TOGGLE_SETTINGS_MODAL = "TOGGLE_SETTINGS_MODAL";
+export const TOGGLE_SETTINGS_MODAL = 'TOGGLE_SETTINGS_MODAL';
 
 export function toggleSettingsModal(toggle) {
   return {
     type: TOGGLE_SETTINGS_MODAL,
-    toggle
+    toggle,
   };
 }
 
-export const SELECT_CATEGORY = "SELECT_CATEGORY";
+export const SELECT_CATEGORY = 'SELECT_CATEGORY';
 
 export function changeCategory(category) {
   return {
     type: SELECT_CATEGORY,
-    category
+    category,
   };
 }
 
 export function changeLanguage(language) {
   return {
     type: SELECT_LANGUAGE,
-    language
+    language,
   };
 }
 
-export const SELECT_LANGUAGE = "SELECT_LANGUAGE";
+export const SELECT_LANGUAGE = 'SELECT_LANGUAGE';
 
-export const FETCH_CONFIG = "FETCH_CONFIG";
-export const FETCH_CONFIG_SUCCESS = "FETCH_CONFIG_SUCCESS";
-export const FETCH_CONFIG_FAILURE = "FETCH_CONFIG_FAILURE";
+export const FETCH_CONFIG = 'FETCH_CONFIG';
+export const FETCH_CONFIG_SUCCESS = 'FETCH_CONFIG_SUCCESS';
+export const FETCH_CONFIG_FAILURE = 'FETCH_CONFIG_FAILURE';
 
 function fetchConfig() {
   return {
-    type: FETCH_CONFIG
+    type: FETCH_CONFIG,
   };
 }
 
 function fetchConfigSuccess(data) {
   return {
     type: FETCH_CONFIG_SUCCESS,
-    data
+    data,
   };
 }
 
 function fetchConfigFailure(error) {
   return {
     type: FETCH_CONFIG_FAILURE,
-    error
+    error,
   };
 }
 
 export function fetchConfigurations() {
-  return dispatch => {
+  return (dispatch) => {
     dispatch(fetchConfig());
     return fetchJson(URL_CONFIG + API_KEY)
-      .then(json => dispatch(fetchConfigSuccess(json)))
-      .catch(error => dispatch(fetchConfigFailure(error.message)));
+      .then((json) => dispatch(fetchConfigSuccess(json)))
+      .catch((error) => dispatch(fetchConfigFailure(error.message)));
   };
 }
 
-export const SEARCH_MOVIE = "SEARCH_MOVIE";
-export const SEARCH_MOVIE_SUCCESS = "SEARCH_MOVIE_SUCCESS";
-export const SEARCH_MOVIE_FAILURE = "SEARCH_MOVIE_FAILURE";
-export const RESET_SERACH = "RESET_SEARCH";
+export const SEARCH_MOVIE = 'SEARCH_MOVIE';
+export const SEARCH_MOVIE_SUCCESS = 'SEARCH_MOVIE_SUCCESS';
+export const SEARCH_MOVIE_FAILURE = 'SEARCH_MOVIE_FAILURE';
+export const RESET_SERACH = 'RESET_SEARCH';
 
 function searchMovie(query) {
   return {
     type: SEARCH_MOVIE,
-    query
+    query,
   };
 }
 
@@ -104,14 +104,14 @@ function searchMovieSuccess(data, query) {
   return {
     type: SEARCH_MOVIE_SUCCESS,
     data,
-    query
+    query,
   };
 }
 
 function searchMovieFail(error) {
   return {
     type: SEARCH_MOVIE_FAILURE,
-    error
+    error,
   };
 }
 
@@ -124,8 +124,8 @@ const debouncedSearch = debounce((dispatch, getState, query) => {
   }
   dispatch(searchMovie(query));
   return fetchJson(url)
-    .then(json => dispatch(searchMovieSuccess(json.results)))
-    .catch(error => dispatch(searchMovieFail(error.message)));
+    .then((json) => dispatch(searchMovieSuccess(json.results)))
+    .catch((error) => dispatch(searchMovieFail(error.message)));
 }, 350);
 
 export function searchMovieList(query) {
@@ -136,31 +136,31 @@ export function searchMovieList(query) {
 
 export function resetSearchMovies() {
   return {
-    type: RESET_SERACH
+    type: RESET_SERACH,
   };
 }
 
-export const FETCH_GENRES = "FETCH_GENRES";
-export const FETCH_GENRES_SUCCESS = "FETCH_GENRES_SUCCESS";
-export const FETCH_GENRES_FAILURE = "FETCH_GENRES_FAILURE";
+export const FETCH_GENRES = 'FETCH_GENRES';
+export const FETCH_GENRES_SUCCESS = 'FETCH_GENRES_SUCCESS';
+export const FETCH_GENRES_FAILURE = 'FETCH_GENRES_FAILURE';
 
 function fetchGenres() {
   return {
-    type: FETCH_GENRES
+    type: FETCH_GENRES,
   };
 }
 
 function fetchGenresSuccess(data) {
   return {
     type: FETCH_GENRES_SUCCESS,
-    data
+    data,
   };
 }
 
 function fetchGenresFail(error) {
   return {
     type: FETCH_GENRES_FAILURE,
-    error
+    error,
   };
 }
 
@@ -169,32 +169,32 @@ export function fetchGenresList() {
     const lang = getState().home.selectedLanguage.code;
     dispatch(fetchGenres());
     return fetchJson(URL_GENRES + API_KEY + lang)
-      .then(json => dispatch(fetchGenresSuccess(json.genres)))
-      .catch(error => dispatch(fetchGenresFail(error.message)));
+      .then((json) => dispatch(fetchGenresSuccess(json.genres)))
+      .catch((error) => dispatch(fetchGenresFail(error.message)));
   };
 }
 
-export const FETCH_MOVIES = "FETCH_MOVIES";
-export const FETCH_MOVIES_SUCCESS = "FETCH_MOVIES_SUCCESS";
-export const FETCH_MOVIES_FAILURE = "FETCH_MOVIES_FAILURE";
+export const FETCH_MOVIES = 'FETCH_MOVIES';
+export const FETCH_MOVIES_SUCCESS = 'FETCH_MOVIES_SUCCESS';
+export const FETCH_MOVIES_FAILURE = 'FETCH_MOVIES_FAILURE';
 
 function fetchMovies() {
   return {
-    type: FETCH_MOVIES
+    type: FETCH_MOVIES,
   };
 }
 
 function fetchMoviesSuccess(data) {
   return {
     type: FETCH_MOVIES_SUCCESS,
-    data
+    data,
   };
 }
 
 function fetchMoviesFail(error) {
   return {
     type: FETCH_MOVIES_FAILURE,
-    error
+    error,
   };
 }
 
@@ -225,74 +225,74 @@ export function fetchMoviesList() {
     }
 
     return fetchJson(url + API_KEY + lang)
-      .then(json => dispatch(fetchMoviesSuccess(json.results)))
-      .catch(error => dispatch(fetchMoviesFail(error.message)));
+      .then((json) => dispatch(fetchMoviesSuccess(json.results)))
+      .catch((error) => dispatch(fetchMoviesFail(error.message)));
   };
 }
 
-export const FETCH_MOVIE = "FETCH_MOVIE";
-export const FETCH_MOVIE_SUCCESS = "FETCH_MOVIE_SUCCESS";
-export const FETCH_MOVIE_FAILURE = "FETCH_MOVIE_FAILURE";
+export const FETCH_MOVIE = 'FETCH_MOVIE';
+export const FETCH_MOVIE_SUCCESS = 'FETCH_MOVIE_SUCCESS';
+export const FETCH_MOVIE_FAILURE = 'FETCH_MOVIE_FAILURE';
 
 function fetchMovie() {
   return {
-    type: FETCH_MOVIE
+    type: FETCH_MOVIE,
   };
 }
 
 function fetchMovieSuccess(data) {
   return {
     type: FETCH_MOVIE_SUCCESS,
-    data
+    data,
   };
 }
 
 function fetchMovieFail(error) {
   return {
     type: FETCH_MOVIE_FAILURE,
-    error
+    error,
   };
 }
 
 export function fetchMovieDetail(id) {
   const url_movie = URL_MOVIE + id + API_KEY + MOVIE_APPEND_PARAMETER;
-  return dispatch => {
+  return (dispatch) => {
     dispatch(fetchMovie());
     return fetchJson(url_movie)
-      .then(json => dispatch(fetchMovieSuccess(json)))
-      .catch(error => dispatch(fetchMovieFail(error.message)));
+      .then((json) => dispatch(fetchMovieSuccess(json)))
+      .catch((error) => dispatch(fetchMovieFail(error.message)));
   };
 }
 
-export const FETCH_REVIEWS = "FETCH_REVIEWS";
-export const FETCH_REVIEWS_SUCCESS = "FETCH_REVIEWS_SUCCESS";
-export const FETCH_REVIEWS_FAILURE = "FETCH_REVIEWS_FAILURE";
+export const FETCH_REVIEWS = 'FETCH_REVIEWS';
+export const FETCH_REVIEWS_SUCCESS = 'FETCH_REVIEWS_SUCCESS';
+export const FETCH_REVIEWS_FAILURE = 'FETCH_REVIEWS_FAILURE';
 
 function fetchReviews() {
   return {
-    type: FETCH_REVIEWS
+    type: FETCH_REVIEWS,
   };
 }
 
 function fetchReviewsSuccess(data) {
   return {
     type: FETCH_REVIEWS_SUCCESS,
-    data
+    data,
   };
 }
 
 function fetchReviewsFail(error) {
   return {
     type: FETCH_REVIEWS_FAILURE,
-    error
+    error,
   };
 }
 
 export function fetchReviewsList(id) {
-  return function(dispatch) {
+  return function (dispatch) {
     dispatch(fetchReviews());
     return fetchJson(URL_GENRES + API_KEY)
-      .then(json => dispatch(fetchReviewsSuccess(json.results)))
-      .catch(error => dispatch(fetchReviewsFail(error.message)));
+      .then((json) => dispatch(fetchReviewsSuccess(json.results)))
+      .catch((error) => dispatch(fetchReviewsFail(error.message)));
   };
 }

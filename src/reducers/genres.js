@@ -1,4 +1,4 @@
-import { FETCH_GENRES_SUCCESS } from "../actions";
+import { FETCH_GENRES_SUCCESS } from '../actions';
 
 const initState = [];
 export default (state = initState, action) => {

@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import languages from "../constants/languages";
-import { find, filter } from "lodash";
-import { getImagesUrl, isNarrowScreen, fetchJson } from "../utils";
-import { Badge, Container, Row, Col, Card } from "react-bootstrap";
-import PageNavigator from "./PageNavigator";
-import RatingCircle from "./RatingCircle";
-import ColorThief from "colorthief";
-import Color from "color";
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import languages from '../constants/languages';
+import { find, filter } from 'lodash';
+import { getImagesUrl, isNarrowScreen, fetchJson } from '../utils';
+import { Badge, Container, Row, Col, Card } from 'react-bootstrap';
+import PageNavigator from './PageNavigator';
+import RatingCircle from './RatingCircle';
+import ColorThief from 'colorthief';
+import Color from 'color';
 import {
   URL_YOUTUBE,
   URL_REVIEWS,
   API_KEY_PARAM as API_KEY,
   URL_MOVIE,
-} from "../constants";
+} from '../constants';
 
-import castPlaceholder from "../imgs/profile-placeholder.jpg";
+import castPlaceholder from '../imgs/profile-placeholder.jpg';
 
 /* Movie body will have these sections
     - Overview
@@ -50,7 +50,7 @@ export const Movie = ({ movie }) => {
         offsetElementTop={0}
         offsetContainerTop={0}
         offsetContainerBottom={0}
-        items={["Overview", "Cast", "Extra", "Reviews", "Recommendations"]}
+        items={['Overview', 'Cast', 'Extra', 'Reviews', 'Recommendations']}
       />
     </>
   );
@@ -61,7 +61,7 @@ const Reviews = ({ movie, id }) => {
   const [expandedList, setExpandedList] = useState({});
 
   useEffect(() => {
-    const url_reviews = URL_MOVIE + "/" + movie.id + URL_REVIEWS + API_KEY;
+    const url_reviews = URL_MOVIE + '/' + movie.id + URL_REVIEWS + API_KEY;
     setReviews([]);
     const abortController = new AbortController();
     const signal = abortController.signal;
@@ -109,7 +109,7 @@ const Reviews = ({ movie, id }) => {
                   <h6>{review.author}</h6>
                   <p>
                     {content}
-                    {needsTrimming ? "..." : ""}
+                    {needsTrimming ? '...' : ''}
                   </p>
                   <div className="d-flex justify-content-end">
                     <button
@@ -119,7 +119,7 @@ const Reviews = ({ movie, id }) => {
                       type="button"
                       className="btn btn-sm btn-outline-secondary"
                     >
-                      {needsTrimming ? "See more" : "See less"}
+                      {needsTrimming ? 'See more' : 'See less'}
                     </button>
                   </div>
                 </div>
@@ -135,27 +135,27 @@ const Reviews = ({ movie, id }) => {
 const Extra = ({ movie, id }) => {
   const usReleaseDate = find(
     movie.release_dates.results,
-    (rel) => rel.iso_3166_1 === "US"
+    (rel) => rel.iso_3166_1 === 'US'
   );
   const extra = {
     Status: movie.status,
     ReleaseDate: new Date(movie.release_date).toDateString().substr(4),
-    Rating: usReleaseDate ? usReleaseDate.release_dates[0].certification : "-",
+    Rating: usReleaseDate ? usReleaseDate.release_dates[0].certification : '-',
     ProductionCountries: movie.production_countries
       .map((pc) => pc.name)
-      .join(", "),
+      .join(', '),
 
     Runtime: movie.runtime
-      ? Math.floor(movie.runtime / 60) + "hr " + (movie.runtime % 60) + "mins"
-      : "-",
+      ? Math.floor(movie.runtime / 60) + 'hr ' + (movie.runtime % 60) + 'mins'
+      : '-',
 
-    Budget: movie.budget ? "$" + movie.budget : "-",
-    Revenue: movie.revenue ? "$" + movie.revenue : "-",
+    Budget: movie.budget ? '$' + movie.budget : '-',
+    Revenue: movie.revenue ? '$' + movie.revenue : '-',
   };
 
   const trailers = filter(
     movie.videos.results,
-    (vid) => vid.site === "YouTube"
+    (vid) => vid.site === 'YouTube'
   ).slice(0, 3);
 
   return (
@@ -175,7 +175,7 @@ const Extra = ({ movie, id }) => {
           </Col>
           <Col>
             <h6>Rating</h6>
-            <p>{extra.Rating ? extra.Rating : "Not Rated"}</p>
+            <p>{extra.Rating ? extra.Rating : 'Not Rated'}</p>
           </Col>
           <Col>
             <h6>Production Countries</h6>
@@ -243,8 +243,8 @@ const Cast = ({ cast, id }) => {
           <Col>
             <div
               className={
-                "movie-cast-container" +
-                (cast.length > 3 ? " justify-content-md-between" : "")
+                'movie-cast-container' +
+                (cast.length > 3 ? ' justify-content-md-between' : '')
               }
             >
               {cast.map((char) => (
@@ -253,7 +253,7 @@ const Cast = ({ cast, id }) => {
                     variant="top"
                     src={
                       char.profile_path
-                        ? "//images.tmdb.org/t/p/w185" + char.profile_path
+                        ? '//images.tmdb.org/t/p/w185' + char.profile_path
                         : castPlaceholder
                     }
                   />
@@ -283,11 +283,11 @@ const Overview = ({ movie, images, id }) => {
   ).english_name;
 
   const release_date = movie.release_date
-    ? movie.release_date.split("-")[0]
-    : "Unknown";
+    ? movie.release_date.split('-')[0]
+    : 'Unknown';
 
   // Load background based on window width
-  let backdropSize = isNarrowScreen() ? "w780" : "w1280";
+  let backdropSize = isNarrowScreen() ? 'w780' : 'w1280';
 
   // This will be used to extract the prominent color from the
   // backdrop image to apply a pleasant customization to the page
@@ -298,7 +298,7 @@ const Overview = ({ movie, images, id }) => {
     const img = new Image();
 
     //This line is required for the color thief library to work
-    img.crossOrigin = "anonymous";
+    img.crossOrigin = 'anonymous';
 
     const onLoad = (e) => {
       // Get the prominent color and saturate it
@@ -312,14 +312,14 @@ const Overview = ({ movie, images, id }) => {
     };
 
     // We tell the image, when you load, call the function that extracts the colors
-    img.addEventListener("load", onLoad);
+    img.addEventListener('load', onLoad);
 
     // This will init image loading
     img.src = images.backdrop.w300;
 
     return () => {
       //clean up the listener
-      img.removeEventListener("load", onLoad);
+      img.removeEventListener('load', onLoad);
     };
   }, [images]); // adding [images] to the useCallback arguments is to make sure the callback will be called only if images change
 
@@ -331,10 +331,10 @@ const Overview = ({ movie, images, id }) => {
   return (
     <div className="movie-overview" style={style} id={id}>
       <div
-        className={images.backdrop ? "has-backdrop" : ""}
+        className={images.backdrop ? 'has-backdrop' : ''}
         style={{
           // If there is a backdrop and prominent color extracted, otherwise gray
-          backgroundColor: prominentColor ? prominentColor.hex() : "#e3e3e3",
+          backgroundColor: prominentColor ? prominentColor.hex() : '#e3e3e3',
         }}
       >
         <Container as="main" id="movie-body-container">
@@ -356,7 +356,7 @@ const Overview = ({ movie, images, id }) => {
                   <div>
                     {movie.genres.map((genre) => (
                       <React.Fragment key={genre.id}>
-                        <Badge variant="dark">{genre.name}</Badge>{" "}
+                        <Badge variant="dark">{genre.name}</Badge>{' '}
                       </React.Fragment>
                     ))}
                   </div>
@@ -365,14 +365,14 @@ const Overview = ({ movie, images, id }) => {
                 {!isNarrowScreen() && (
                   <section className="mb-5">
                     <h4>Overview</h4>
-                    <p>{movie.overview || "Not available"}</p>
+                    <p>{movie.overview || 'Not available'}</p>
                   </section>
                 )}
                 {!isNarrowScreen() && movie.tagline && (
                   <>
                     <section className="mb-4">
                       <h4>Tagline</h4>
-                      <p>{movie.tagline || "Not available"}</p>
+                      <p>{movie.tagline || 'Not available'}</p>
                     </section>
                     <section>
                       <h4>Score</h4>
@@ -411,12 +411,12 @@ const Overview = ({ movie, images, id }) => {
                 </section>
                 <section className="mb-5">
                   <h4>Overview</h4>
-                  <p>{movie.overview || "Not available"}</p>
+                  <p>{movie.overview || 'Not available'}</p>
                 </section>
                 {movie.tagline && (
                   <section className="mb-4">
                     <h4>Tagline</h4>
-                    <p>{movie.tagline || "Not available"}</p>
+                    <p>{movie.tagline || 'Not available'}</p>
                   </section>
                 )}
                 <section></section>

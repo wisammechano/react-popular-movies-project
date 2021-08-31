@@ -9,12 +9,12 @@ import {
   RESET_SERACH,
   FETCH_GENRES_SUCCESS,
   FETCH_CONFIG_SUCCESS,
-  TOGGLE_SETTINGS_MODAL
-} from "../actions";
+  TOGGLE_SETTINGS_MODAL,
+} from '../actions';
 
-import { MOVIES_CATEGORIES, LANGUAGES } from "../constants";
+import { MOVIES_CATEGORIES, LANGUAGES } from '../constants';
 
-const settings = JSON.parse(window.localStorage.getItem("settings")) || {};
+const settings = JSON.parse(window.localStorage.getItem('settings')) || {};
 
 const initState = {
   movies: [],
@@ -22,12 +22,12 @@ const initState = {
   isSearching: false,
   searchError: null,
   error: null,
-  searchQuery: "",
+  searchQuery: '',
   selectedCategory: settings.selectedCategory || MOVIES_CATEGORIES.POPULAR,
   selectedLanguage: settings.selectedLanguage || LANGUAGES.ENGLISH,
   configsLoaded: false,
   genresLoaded: false,
-  showSettings: false
+  showSettings: false,
 };
 
 export default (state = initState, action) => {
@@ -42,15 +42,15 @@ export default (state = initState, action) => {
         searchQuery: action.query,
         isSearching: true,
         searchResults: [],
-        searchError: null
+        searchError: null,
       };
     case RESET_SERACH:
       return {
         ...state,
-        searchQuery: "",
+        searchQuery: '',
         isSearching: false,
         searchResults: [],
-        searchError: null
+        searchError: null,
       };
     case SELECT_LANGUAGE:
       return { ...state, selectedLanguage: action.language };
@@ -61,7 +61,7 @@ export default (state = initState, action) => {
         ...state,
         searchResults: action.data,
         isSearching: false,
-        searchError: null
+        searchError: null,
       };
     case SEARCH_MOVIE_FAILURE:
       return { ...state, searchError: action.error, isSearching: false };

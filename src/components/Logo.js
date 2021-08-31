@@ -1,7 +1,7 @@
-import React from "react";
-import { Navbar } from "react-bootstrap";
-import { Link } from "react-router-dom";
-export const Logo = props => {
+import React from 'react';
+import { Navbar } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+export const Logo = (props) => {
   return (
     <>
       <Navbar.Brand
@@ -13,9 +13,9 @@ export const Logo = props => {
       </Navbar.Brand>
       <Navbar.Brand as={Link} to="/" className="brand-font d-sm-none">
         {props.appName
-          .split(" ")
-          .map(w => w[0])
-          .join("")}
+          .split(' ')
+          .map((w) => w[0])
+          .join('')}
       </Navbar.Brand>
     </>
   );

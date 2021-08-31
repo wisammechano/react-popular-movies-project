@@ -1,7 +1,7 @@
-import React from "react";
-import "./FilmBar.css";
+import React from 'react';
+import './FilmBar.css';
 
-const FilmBar = props => {
+const FilmBar = (props) => {
   return (
     <div className="overlay">
       <div className="wrapper">

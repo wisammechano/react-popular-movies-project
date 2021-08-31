@@ -1,9 +1,9 @@
-import React, { useCallback } from "react";
-import Color from "color";
+import React, { useCallback } from 'react';
+import Color from 'color';
 
-const RatingCircle = ({ width, value, color = "#32a852", id, className }) => {
+const RatingCircle = ({ width, value, color = '#32a852', id, className }) => {
   const draw = useCallback(
-    canvas => {
+    (canvas) => {
       if (!canvas) return;
       // Setup the canvas to display sharply
       // https://stackoverflow.com/a/46920541/5070971
@@ -12,10 +12,10 @@ const RatingCircle = ({ width, value, color = "#32a852", id, className }) => {
       const pixelRatio = window.devicePixelRatio;
       canvas.width = pixelRatio * diameter;
       canvas.height = pixelRatio * diameter;
-      canvas.style.width = diameter + "px";
-      canvas.style.height = diameter + "px";
+      canvas.style.width = diameter + 'px';
+      canvas.style.height = diameter + 'px';
 
-      const context = canvas.getContext("2d"); //to return drawing context on canvas
+      const context = canvas.getContext('2d'); //to return drawing context on canvas
       context.scale(pixelRatio, pixelRatio);
       let loaded = 0; // use it for Amount loaded
 
@@ -42,7 +42,7 @@ const RatingCircle = ({ width, value, color = "#32a852", id, className }) => {
         // Create the background circle
         context.beginPath();
         context.arc(cx, cy, radius, 0, 2 * Math.PI, false);
-        context.fillStyle = "#000"; // Set the fill color
+        context.fillStyle = '#000'; // Set the fill color
         context.fill(); //Fill the arc path black
 
         // Draw the shaded placeholder
@@ -60,16 +60,16 @@ const RatingCircle = ({ width, value, color = "#32a852", id, className }) => {
         context.arc(cx, cy, radius - barWidth, start, angle + start, false);
         context.strokeStyle = barColor.hex();
         context.lineWidth = barWidth;
-        context.lineCap = "round";
+        context.lineCap = 'round';
         context.stroke();
 
         // Write the text indicator
         const fontSize = radius / 2.5;
         context.font = `${fontSize}px Segoe UI`; // specify the font
-        context.fillStyle = "#fff";
-        context.textBaseline = "middle";
-        context.textAlign = "center";
-        context.fillText(loaded + "%", cx - 1, cy + 1); //text value & text position
+        context.fillStyle = '#fff';
+        context.textBaseline = 'middle';
+        context.textAlign = 'center';
+        context.fillText(loaded + '%', cx - 1, cy + 1); //text value & text position
 
         // if we reached the target value, stop the animation
         if (loaded < value) window.requestAnimationFrame(animate);

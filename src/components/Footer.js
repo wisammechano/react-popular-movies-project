@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-const Footer = props => {
+const Footer = (props) => {
   return <div style={{ height: 300 }}>FOOTER</div>;
 };
 

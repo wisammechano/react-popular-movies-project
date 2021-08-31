@@ -1,36 +1,35 @@
 .overlay {
-    height: 100%;
-    width: 100%;
-    position: fixed;
-    overflow: hidden;
-    background-color: #ffffffdd;
-    z-index: 9999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  overflow: hidden;
+  background-color: #ffffffdd;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .wrapper {
-    height: 500px;
-    width: 300px;
-    overflow: hidden;
-    transform: translate3d(0, 0, 0);
+  height: 500px;
+  width: 300px;
+  overflow: hidden;
+  transform: translate3d(0, 0, 0);
 }
 
 .slider {
-    height: 50px;
-    width: 200%;
-    margin-top: 50%;
-    background: url(../imgs/film.png);
-    background-repeat: repeat-x;
-    background-size: 150px;
-    background-position: center;
-    animation: moveSlideshow 2s linear infinite;
+  height: 50px;
+  width: 200%;
+  margin-top: 50%;
+  background: url(../imgs/film.png);
+  background-repeat: repeat-x;
+  background-size: 150px;
+  background-position: center;
+  animation: moveSlideshow 2s linear infinite;
 }
 
-
 @keyframes moveSlideshow {
-    100% {
-        transform: translateX(-50%);
-    }
+  100% {
+    transform: translateX(-50%);
+  }
 }

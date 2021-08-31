@@ -1,23 +1,23 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import {
   URL_MOVIE,
   API_KEY_PARAM as API_KEY,
-  MOVIE_APPEND_PARAMETER
-} from "../constants";
-import { Alert } from "react-bootstrap";
-import ContentLoader from "react-content-loader";
-import { fetchJson } from "../utils";
-import "./MoviePage.css";
-import { Movie } from "./Movie";
+  MOVIE_APPEND_PARAMETER,
+} from '../constants';
+import { Alert } from 'react-bootstrap';
+import ContentLoader from 'react-content-loader';
+import { fetchJson } from '../utils';
+import './MoviePage.css';
+import { Movie } from './Movie';
 
-const MoviePage = props => {
-  const lang = useSelector(state => state.home.selectedLanguage.code);
+const MoviePage = (props) => {
+  const lang = useSelector((state) => state.home.selectedLanguage.code);
   const [state, setState] = useState({
     movie: null,
     error: null,
-    isLoading: true
+    isLoading: true,
   });
 
   const id = useParams().id;
@@ -30,19 +30,19 @@ const MoviePage = props => {
     setState({ movie: null, isLoading: true, error: null });
 
     //Scroll to top of page
-    const page = document.getElementById("movie-page");
+    const page = document.getElementById('movie-page');
     if (page.scrollIntoView) page.scrollIntoView();
 
     const url_movie =
-      URL_MOVIE + "/" + id + API_KEY + MOVIE_APPEND_PARAMETER + lang;
+      URL_MOVIE + '/' + id + API_KEY + MOVIE_APPEND_PARAMETER + lang;
 
     fetchJson(url_movie, { signal: signal })
-      .then(json => setState({ error: null, movie: json, isLoading: false }))
-      .catch(err =>
+      .then((json) => setState({ error: null, movie: json, isLoading: false }))
+      .catch((err) =>
         setState({
           error: err.message,
           isLoading: false,
-          movie: null
+          movie: null,
         })
       );
 
@@ -68,7 +68,7 @@ const MoviePage = props => {
 
 export default MoviePage;
 
-const Loader = props => {
+const Loader = (props) => {
   return (
     <ContentLoader speed={2} primaryColor="#f3f3f3" secondaryColor="#ecebeb">
       <rect x="0" y="0" width="100%" height="420px" />
